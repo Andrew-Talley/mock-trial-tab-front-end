@@ -1,0 +1,17 @@
+query getTournamentInfo($tournament: ID!) {
+  tournament(id: $tournament) {
+    name
+    schools {
+      name
+    }
+    teams {
+      num
+    }
+    judges {
+      id
+    }
+    rounds {
+      roundNum
+    }
+  }
+}

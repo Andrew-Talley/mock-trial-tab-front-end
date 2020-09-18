@@ -1,0 +1,28 @@
+query getRoundInfo($tournamentId: ID!) {
+  tournament(id: $tournamentId) {
+    rounds {
+      roundNum
+      matchups {
+        id
+        pl {
+          team {
+            num
+            name
+          }
+        }
+        def {
+          team {
+            num
+            name
+          }
+        }
+        ballots {
+          id
+          judge {
+            name
+          }
+        }
+      }
+    }
+  }
+}

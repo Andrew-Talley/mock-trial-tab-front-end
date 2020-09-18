@@ -3,13 +3,48 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
     "build": "next build",
+    "dev": "next dev",
+    "format": "prettier --write .",
+    "gql-codegen": "graphql-codegen --config codegen.yml",
+    "load-gql-schema": "get-graphql-schema http://localhost:5000/graphql > schema.graphql",
     "start": "next start"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.30",
+    "@fortawesome/free-solid-svg-icons": "^5.14.0",
+    "@fortawesome/react-fontawesome": "^0.1.11",
+    "@graphql-codegen/near-operation-file-preset": "^1.17.11",
+    "@types/react-table": "^7.0.22",
+    "bootswatch": "^4.5.2",
+    "graphql": "^15.3.0",
+    "graphql-tag": "^2.11.0",
+    "isomorphic-unfetch": "^3.0.0",
     "next": "9.5.3",
+    "next-urql": "^1.1.0",
     "react": "16.13.1",
-    "react-dom": "16.13.1"
+    "react-bootstrap-typeahead": "^5.1.1",
+    "react-dom": "16.13.1",
+    "react-is": "^16.13.1",
+    "react-table": "^7.5.0",
+    "react-toastify": "^6.0.8",
+    "reactstrap": "^8.5.1",
+    "sass": "^1.26.10",
+    "styled-components": "^5.2.0",
+    "urql": "^1.10.0"
+  },
+  "devDependencies": {
+    "@graphql-codegen/cli": "1.17.8",
+    "@graphql-codegen/introspection": "^1.17.8",
+    "@graphql-codegen/typescript": "1.17.8",
+    "@graphql-codegen/typescript-operations": "1.17.8",
+    "@graphql-codegen/typescript-urql": "^2.0.1",
+    "@types/react": "^16.9.49",
+    "@types/reactstrap": "^8.5.1",
+    "@types/styled-components": "^5.1.3",
+    "babel-plugin-styled-components": "^1.11.1",
+    "get-graphql-schema": "^2.1.2",
+    "prettier": "^2.1.1",
+    "typescript": "^4.0.2"
   }
 }

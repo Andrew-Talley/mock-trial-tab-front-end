@@ -1,0 +1,190 @@
+type AddStudentToTeam {
+  team: Team!
+  student: Student!
+}
+
+type AssignAttorneyToDirect {
+  matchup: Matchup!
+  student: Student!
+  order: Int!
+}
+
+type AssignCrossOrder {
+  matchup: Matchup!
+  team: Team!
+  student: Student!
+  order: Int!
+}
+
+type AssignStudentToRole {
+  matchup: Matchup!
+  student: Student!
+  role: AttorneyRole!
+}
+
+type AssignWitnessName {
+  matchup: Matchup!
+  witnessName: String!
+}
+
+type AssignWitnessOrder {
+  matchup: Matchup!
+  student: Student!
+  order: Int!
+}
+
+enum AttorneyRole {
+  OPENER
+  MIDDLE
+  CLOSER
+}
+
+type Ballot {
+  id: ID!
+  matchup: Matchup!
+  judge: Judge!
+  side(side: Side!): BallotSide!
+  pd(side: Side!): Int!
+  complete: Boolean!
+}
+
+type BallotSide {
+  side: Side!
+  speech(speech: Speech!): Int
+  exam(order: Int!, role: Role!, type: ExamType!): Int
+  sum: Int!
+}
+
+enum ExamType {
+  DIRECT
+  CROSS
+}
+
+type Judge {
+  id: ID!
+  name: String!
+  tournamentId: ID!
+  ballots: [Ballot]!
+  conflicts: [School]!
+}
+
+input ManualRoundMatchup {
+  pl: Int!
+  def: Int!
+}
+
+type Matchup {
+  id: ID!
+  pl: MatchupTeam!
+  def: MatchupTeam!
+  roundNum: Int!
+  team(side: Side!): MatchupTeam!
+  ballots: [Ballot]
+}
+
+type MatchupAttorney {
+  student: Student!
+}
+
+type MatchupTeam {
+  tournamentId: ID!
+  matchupId: ID!
+  teamNum: Int!
+  side: Side!
+  team: Team!
+  studentInRole(role: AttorneyRole!): Student
+  witness(order: Int): MatchupWitness!
+  attorney(order: Int, role: AttorneyRole, crossingWitnessNum: Int): MatchupAttorney
+}
+
+type MatchupWitness {
+  matchupTeam: MatchupTeam!
+  order: Int!
+  student: Student!
+  witnessName: String!
+}
+
+type Mutation {
+  addTournament(name: String!): Tournament
+  addSchool(name: String!, tournament: ID!): School!
+  addTeam(name: String!, num: Int!, school: String!, tournament: ID!): Team
+  addStudentToTeam(name: String!, team: Int!, tournamentId: ID!): AddStudentToTeam
+  assignStudentToRole(matchup: ID!, role: AttorneyRole!, student: ID!, team: Int!, tournamentId: ID!): AssignStudentToRole
+  addManualRound(matchups: [ManualRoundMatchup]!, tournamentId: ID!): Round!
+  addJudge(name: String!, tournamentId: ID!): Judge!
+  addJudgeConflict(judgeId: ID!, school: String!, tournamentId: ID!): Judge!
+  assignJudgeToMatchup(judge: ID!, matchup: ID!, tournament: ID!): Ballot!
+  assignWitnessOrder(matchup: ID!, order: Int!, side: Side!, student: ID!, tournament: ID!): AssignWitnessOrder!
+  assignAttorneyToDirect(matchup: ID!, order: Int!, side: Side!, student: ID!, tournament: ID!): AssignAttorneyToDirect!
+  assignCrossOrder(matchup: ID!, order: Int!, side: Side!, student: ID!, tournament: ID!): AssignCrossOrder!
+  assignWitnessName(matchup: ID!, order: Int!, side: Side!, tournament: ID!, witness: String!): AssignWitnessName!
+  assignSpeechScore(ballot: ID!, score: Int!, side: Side!, speech: Speech!): Int!
+  assignExamScore(ballot: ID!, cross: Boolean!, exam: Int!, score: Int!, side: Side!, witness: Boolean!): Int!
+  completeBallot(ballot: ID!, tournament: ID!): Ballot!
+}
+
+type Query {
+  tournaments: [Tournament]!
+  tournament(id: ID!): Tournament!
+}
+
+enum Role {
+  WITNESS
+  ATTORNEY
+}
+
+type Round {
+  tournamentId: ID!
+  roundNum: Int!
+  matchups: [Matchup]!
+}
+
+type School {
+  tournamentId: ID
+  name: String
+  teams: [Team]
+}
+
+enum Side {
+  PL
+  DEF
+}
+
+enum Speech {
+  OPENING
+  CLOSING
+}
+
+type Student {
+  id: ID!
+  name: String!
+}
+
+type Team {
+  name: String!
+  num: Int!
+  schoolName: String!
+  school: School!
+  tournamentId: ID!
+  students: [Student]!
+  matchups: [Matchup]!
+  wins: Int!
+  losses: Int!
+  ties: Int!
+}
+
+type Tournament {
+  id: ID!
+  name: String!
+  schools: [School]!
+  teams: [Team]!
+  team(num: Int!): Team!
+  school(name: String!): School!
+  judges: [Judge]!
+  judge(id: ID!): Judge!
+  rounds: [Round]!
+  round(num: Int!): Round!
+  matchup(id: ID!): Matchup!
+  ballot(id: ID!): Ballot!
+}
+

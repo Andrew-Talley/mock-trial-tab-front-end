@@ -1,0 +1,35 @@
+fragment matchupData on Matchup {
+  id
+  pl {
+    teamNum
+  }
+  def {
+    teamNum
+  }
+  ballots {
+    id
+  }
+}
+
+query matchupInfo($tournamentId: ID!, $roundNum: Int!) {
+  tournament(id: $tournamentId) {
+    round(num: $roundNum) {
+      matchups {
+        ...matchupData
+      }
+    }
+  }
+}
+
+mutation assignJudge($tournamentId: ID!, $matchupId: ID!, $judgeId: ID!) {
+  assignJudgeToMatchup(
+    judge: $judgeId
+    matchup: $matchupId
+    tournament: $tournamentId
+  ) {
+    id
+    matchup {
+      id
+    }
+  }
+}

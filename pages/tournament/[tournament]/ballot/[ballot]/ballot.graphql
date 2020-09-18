@@ -1,0 +1,24 @@
+query getBallotInfo($tournament: ID!, $ballot: ID!) {
+  tournament(id: $tournament) {
+    ballot(id: $ballot) {
+      judge {
+        name
+      }
+      matchup {
+        pl {
+          teamNum
+        }
+        def {
+          teamNum
+        }
+      }
+    }
+  }
+}
+
+mutation completeBallot($tournament: ID!, $ballot: ID!) {
+  completeBallot(tournament: $tournament, ballot: $ballot) {
+    id
+    complete
+  }
+}

@@ -1,0 +1,18 @@
+mutation assignRound($tournamentId: ID!, $matchups: [ManualRoundMatchup!]!) {
+  addManualRound(tournamentId: $tournamentId, matchups: $matchups) {
+    roundNum
+    matchups {
+      id
+      pl {
+        team {
+          num
+        }
+      }
+      def {
+        team {
+          num
+        }
+      }
+    }
+  }
+}

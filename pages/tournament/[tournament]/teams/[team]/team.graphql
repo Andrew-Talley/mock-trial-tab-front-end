@@ -1,0 +1,30 @@
+query teamInfo($tournament: ID!, $teamNum: Int!) {
+  tournament(id: $tournament) {
+    team(num: $teamNum) {
+      num
+      name
+
+      students {
+        id
+        name
+      }
+
+      matchups {
+        id
+        pl {
+          team {
+            num
+            name
+          }
+        }
+        def {
+          team {
+            num
+            name
+          }
+        }
+        roundNum
+      }
+    }
+  }
+}

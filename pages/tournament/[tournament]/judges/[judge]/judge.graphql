@@ -1,0 +1,35 @@
+fragment judgeBallotInfo on Ballot {
+  id
+
+  matchup {
+    roundNum
+
+    pl {
+      teamNum
+    }
+    def {
+      teamNum
+    }
+  }
+}
+
+query judgeInfo($tournament: ID!, $judge: ID!) {
+  tournament(id: $tournament) {
+    judge(id: $judge) {
+      id
+      name
+
+      conflicts {
+        name
+      }
+
+      ballots {
+        ...judgeBallotInfo
+      }
+    }
+
+    schools {
+      name
+    }
+  }
+}

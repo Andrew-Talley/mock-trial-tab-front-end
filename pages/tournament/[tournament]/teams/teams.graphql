@@ -1,0 +1,15 @@
+fragment teamData on Team {
+  num
+  name
+  wins
+  losses
+  ties
+}
+
+query getAllTeams($tournamentId: ID!) {
+  tournament(id: $tournamentId) {
+    teams {
+      ...teamData
+    }
+  }
+}

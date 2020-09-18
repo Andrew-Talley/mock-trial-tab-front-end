@@ -1,0 +1,63 @@
+query speechScore(
+  $tournament: ID!
+  $ballot: ID!
+  $side: Side!
+  $speech: Speech!
+) {
+  tournament(id: $tournament) {
+    ballot(id: $ballot) {
+      side(side: $side) {
+        speech(speech: $speech)
+      }
+    }
+  }
+}
+
+query examScore(
+  $tournament: ID!
+  $ballot: ID!
+  $side: Side!
+  $role: Role!
+  $type: ExamType!
+  $witnessNum: Int!
+) {
+  tournament(id: $tournament) {
+    ballot(id: $ballot) {
+      side(side: $side) {
+        exam(order: $witnessNum, role: $role, type: $type)
+      }
+    }
+  }
+}
+
+mutation updateSpeech(
+  $ballot: ID!
+  $side: Side!
+  $speech: Speech!
+  $score: Int!
+) {
+  assignSpeechScore(
+    ballot: $ballot
+    side: $side
+    speech: $speech
+    score: $score
+  )
+}
+
+mutation updateExam(
+  $ballot: ID!
+  $side: Side!
+  $witnessNum: Int!
+  $cross: Boolean!
+  $witness: Boolean!
+  $score: Int!
+) {
+  assignExamScore(
+    ballot: $ballot
+    side: $side
+    exam: $witnessNum
+    cross: $cross
+    witness: $witness
+    score: $score
+  )
+}

@@ -1,0 +1,18 @@
+query ballotModalInfo($tournament: ID!) {
+  tournament(id: $tournament) {
+    judges {
+      id
+      name
+    }
+  }
+}
+
+mutation assignBallot($tournament: ID!, $matchup: ID!, $judge: ID!) {
+  assignJudgeToMatchup(
+    tournament: $tournament
+    matchup: $matchup
+    judge: $judge
+  ) {
+    id
+  }
+}

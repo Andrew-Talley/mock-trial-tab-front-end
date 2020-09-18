@@ -1,0 +1,16 @@
+query getSchools($tournamentId: ID!) {
+  tournament(id: $tournamentId) {
+    schools {
+      name
+      teams {
+        num
+      }
+    }
+  }
+}
+
+mutation addSchool($tournamentId: ID!, $schoolName: String!) {
+  addSchool(name: $schoolName, tournament: $tournamentId) {
+    name
+  }
+}

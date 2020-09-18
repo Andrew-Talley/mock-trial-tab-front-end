@@ -1,0 +1,6 @@
+mutation createJudge($tournamentId: ID!, $judgeName: String!) {
+  addJudge(tournamentId: $tournamentId, name: $judgeName) {
+    id
+    name
+  }
+}

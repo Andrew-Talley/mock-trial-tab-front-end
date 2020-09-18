@@ -1,0 +1,11 @@
+query listJudges($tournament: ID!) {
+  tournament(id: $tournament) {
+    judges {
+      id
+      name
+      conflicts {
+        name
+      }
+    }
+  }
+}

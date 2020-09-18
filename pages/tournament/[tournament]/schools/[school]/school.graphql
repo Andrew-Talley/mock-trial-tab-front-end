@@ -1,0 +1,10 @@
+query getSchoolInfo($tournamentId: ID!, $schoolName: String!) {
+  tournament(id: $tournamentId) {
+    school(name: $schoolName) {
+      teams {
+        num
+        name
+      }
+    }
+  }
+}

@@ -1,0 +1,32 @@
+fragment sideInfo on MatchupTeam {
+  team {
+    num
+    name
+  }
+}
+
+query getMatchupInfo($tournament: ID!, $matchup: ID!) {
+  tournament(id: $tournament) {
+    matchup(id: $matchup) {
+      id
+      roundNum
+
+      pl {
+        ...sideInfo
+      }
+
+      def {
+        ...sideInfo
+      }
+
+      ballots {
+        id
+        complete
+        judge {
+          name
+        }
+        pd(side: PL)
+      }
+    }
+  }
+}

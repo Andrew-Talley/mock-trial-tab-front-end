@@ -2,11 +2,11 @@ import React, { useMemo } from "react";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { Column } from "react-table";
-import { DataTable } from "../../../../components/data-table";
-import { useGetAllTeamsQuery } from "./teams.generated";
+import { DataTable } from "components/data-table";
+import { useGetAllTeamsQuery } from "page-gql/teams.generated";
 import Link from "next/link";
 import { Button } from "reactstrap";
-import { NewTeamModal } from "../../../../components/new-team-modal/new-team-modal";
+import { NewTeamModal } from "components/new-team-modal/new-team-modal";
 
 const Teams: NextPage = () => {
   const { tournament } = useRouter().query;
@@ -37,6 +37,7 @@ const Teams: NextPage = () => {
       },
       {
         Header: "Record",
+
         accessor: (data: any) => `${data.wins} - ${data.losses} - ${data.ties}`,
       },
     ],

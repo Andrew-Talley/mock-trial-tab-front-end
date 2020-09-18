@@ -2,10 +2,10 @@ import React from "react";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 
-import { useListJudgesQuery } from "./judges.generated";
-import { DataTable } from "../../../../components/data-table";
+import { useListJudgesQuery } from "page-gql/judges.generated";
+import { DataTable } from "components/data-table";
 import { Button } from "reactstrap";
-import { AddJudgeModal } from "../../../../components/add-judge-modal/AddJudgeModal";
+import { AddJudgeModal } from "components/add-judge-modal/AddJudgeModal";
 import Link from "next/link";
 
 const Judges: NextPage = () => {

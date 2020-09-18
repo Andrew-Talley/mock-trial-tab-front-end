@@ -2,10 +2,10 @@ import React, { useMemo } from "react";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 
-import { useGetSchoolInfoQuery } from "./school.generated";
+import { useGetSchoolInfoQuery } from "page-gql/school.generated";
 import { useTable, Column } from "react-table";
-import { DataTable } from "../../../../../components/data-table";
-import { NewTeamModal } from "../../../../../components/new-team-modal/new-team-modal";
+import { DataTable } from "components/data-table";
+import { NewTeamModal } from "components/new-team-modal/new-team-modal";
 import { Button } from "reactstrap";
 import Link from "next/link";
 

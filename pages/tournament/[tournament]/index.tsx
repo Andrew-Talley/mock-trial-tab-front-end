@@ -2,8 +2,8 @@ import * as React from "react";
 import { NextPage } from "next";
 import { Row, Col, Card, CardHeader, CardBody } from "reactstrap";
 
-import { withMTUrqlClient } from "../../../helpers/withMTUrqlClient";
-import { useGetTournamentInfoQuery } from "./tournament.generated";
+import { withMTUrqlClient } from "helpers/withMTUrqlClient";
+import { useGetTournamentInfoQuery } from "page-gql/tournament.generated";
 import { useRouter } from "next/router";
 import Link from "next/link";
 

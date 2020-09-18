@@ -3,10 +3,10 @@ import { NextPage } from "next";
 import { useRouter } from "next/router";
 import Head from "next/head";
 
-import { useGetMatchupInfoQuery } from "./matchup.generated";
-import { DataTable } from "../../../../../components/data-table";
+import { useGetMatchupInfoQuery } from "page-gql/matchup.generated";
+import { DataTable } from "components/data-table";
 import { Button } from "reactstrap";
-import { AddBallotModal } from "../../../../../components/add-ballot-modal/AddBallotModal";
+import { AddBallotModal } from "components/add-ballot-modal/AddBallotModal";
 import Link from "next/link";
 
 const columns = [

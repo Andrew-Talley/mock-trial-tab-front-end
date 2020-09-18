@@ -7,10 +7,13 @@ import { useTable, Column } from "react-table";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
-import { useGetSchoolsQuery, GetSchoolsQuery } from "./schools.generated";
-import { withMTUrqlClient } from "../../../../helpers/withMTUrqlClient";
-import { DataTable } from "../../../../components/data-table";
-import NewSchoolModal from "../../../../components/new-school-modal";
+import {
+  useGetSchoolsQuery,
+  GetSchoolsQuery,
+} from "page-gql/schools.generated";
+import { withMTUrqlClient } from "helpers/withMTUrqlClient";
+import { DataTable } from "components/data-table";
+import NewSchoolModal from "components/new-school-modal";
 
 const Schools: NextPage = () => {
   const { tournament } = useRouter().query;

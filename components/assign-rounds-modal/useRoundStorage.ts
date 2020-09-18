@@ -1,4 +1,4 @@
-import { TeamDataFragment } from "../../pages/tournament/[tournament]/teams/teams.generated";
+import { TeamDataFragment } from "page-gql/teams.generated";
 import { useMemo, useReducer, useEffect } from "react";
 
 interface Round {

@@ -5,13 +5,13 @@ import styled from "styled-components";
 import { Button } from "reactstrap";
 import { toast } from "react-toastify";
 
-import { BallotSide } from "../../../../../components/ballot/BallotSide";
-import { Side } from "../../../../generated/graphql";
+import { BallotSide } from "components/ballot/BallotSide";
+import { Side } from "generated/graphql";
 import {
   useGetBallotInfoQuery,
   useCompleteBallotMutation,
-} from "./ballot.generated";
-import { useTrackValidity } from "../../../../../components/ballot/useTrackValidity";
+} from "page-gql/ballot.generated";
+import { useTrackValidity } from "components/ballot/useTrackValidity";
 
 const Ballot = styled.div`
   display: grid;

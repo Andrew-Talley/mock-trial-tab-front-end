@@ -1,4 +1,4 @@
-import { Side, Speech } from "../../pages/generated/graphql";
+import { Side, Speech } from "../../generated/graphql";
 import { BallotScore } from "./BallotScore";
 import {
   useSpeechScoreQuery,

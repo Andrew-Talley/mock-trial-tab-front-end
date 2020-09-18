@@ -12,7 +12,7 @@ import { DataTable } from "../data-table";
 import {
   useGetAllTeamsQuery,
   TeamDataFragment,
-} from "../../pages/tournament/[tournament]/teams/teams.generated";
+} from "page-gql/teams.generated";
 import { useRoundStorage } from "./useRoundStorage";
 import { useAssignRoundMutation } from "./assignRound.generated";
 

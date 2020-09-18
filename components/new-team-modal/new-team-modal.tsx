@@ -12,7 +12,7 @@ import {
 } from "reactstrap";
 
 import { useAddTeamMutation } from "./create-team.generated";
-import { useGetSchoolsQuery } from "../../pages/tournament/[tournament]/schools/schools.generated";
+import { useGetSchoolsQuery } from "page-gql/schools.generated";
 
 interface NewTeamModalProps {
   children: React.ReactNode;

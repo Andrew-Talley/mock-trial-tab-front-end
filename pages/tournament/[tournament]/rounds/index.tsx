@@ -1,13 +1,13 @@
 import React, { useState, CSSProperties, useMemo } from "react";
 import { Nav, NavItem, NavLink, TabContent, TabPane, Button } from "reactstrap";
-import { useGetRoundInfoQuery } from "./rounds.generated";
+import { useGetRoundInfoQuery } from "page-gql/rounds.generated";
 import { useRouter } from "next/router";
-import { DataTable } from "../../../../components/data-table";
-import { AssignRoundsModal } from "../../../../components/assign-rounds-modal/AssignRoundsModal";
+import { DataTable } from "components/data-table";
+import { AssignRoundsModal } from "components/assign-rounds-modal/AssignRoundsModal";
 import { Column } from "react-table";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faPlusCircle, faEye } from "@fortawesome/free-solid-svg-icons";
-import { AddBallotModal } from "../../../../components/add-ballot-modal/AddBallotModal";
+import { AddBallotModal } from "components/add-ballot-modal/AddBallotModal";
 import Link from "next/link";
 
 const rounds = Array.from(new Array(4), (_, ind) => ind + 1);

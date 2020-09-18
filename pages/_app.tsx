@@ -6,8 +6,8 @@ import "react-toastify/dist/ReactToastify.css";
 import React from "react";
 import { Container } from "reactstrap";
 import { ToastContainer } from "react-toastify";
-import { HeaderBar } from "./header-bar";
-import { withMTUrqlClient } from "../helpers/withMTUrqlClient";
+import { HeaderBar } from "components/header-bar";
+import { withMTUrqlClient } from "helpers/withMTUrqlClient";
 
 function MyApp({ Component, pageProps }) {
   return (

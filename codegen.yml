@@ -2,14 +2,14 @@ overwrite: true
 schema: "http://localhost:5000/graphql"
 documents: "**/*.graphql"
 generates:
-  pages/generated/graphql.ts:
+  generated/graphql.ts:
     plugins:
       - "typescript"
   pages/:
     preset: near-operation-file
     presetConfig:
       extension: .generated.tsx
-      baseTypesPath: generated/graphql.ts
+      baseTypesPath: ../generated/graphql.ts
     plugins:
       - typescript-operations
       - typescript-urql

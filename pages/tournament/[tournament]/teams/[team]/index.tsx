@@ -3,8 +3,8 @@ import { useRouter } from "next/router";
 import React, { useMemo } from "react";
 import { Row, Col } from "reactstrap";
 
-import { useTeamInfoQuery } from "./team.generated";
-import { DataTable } from "../../../../../components/data-table";
+import { useTeamInfoQuery } from "page-gql/team.generated";
+import { DataTable } from "components/data-table";
 import Link from "next/link";
 
 const studentColumns = [

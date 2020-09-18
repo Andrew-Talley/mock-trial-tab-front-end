@@ -46,6 +46,15 @@ export default function Home() {
         <li>Ability to manually add pairings for a given round</li>
         <li>Ability to manually assign judges to ballots</li>
         <li>Ability to share ballots via url</li>
+        <li>
+          A lot of rusty edges! If there's an error, it probably won't tell you
+          (though it'll be obvious that it didn't work). If you change something
+          in one place, you may need to reload the page before it shows up
+          somewhere else. And if you try, you can absolutely break things
+          (assign a judge multiple ballots in the same round, etc.). All of this
+          will be fixed, but be forewarned you need to be a bit gentle with this
+          in its current iteration.
+        </li>
       </ul>
       <p>
         For the most part, we have a very bare bones setup. For now, I'd love

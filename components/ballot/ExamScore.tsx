@@ -1,6 +1,6 @@
 import { BallotScore } from "./BallotScore";
-import { Side, Role, ExamType } from "../../pages/generated/graphql";
-import { sideSymbol } from "../../helpers/sideSymbol";
+import { Side, Role, ExamType } from "../../generated/graphql";
+import { sideSymbol } from "helpers/sideSymbol";
 import { useExamScoreQuery, useUpdateExamMutation } from "./ballot.generated";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";

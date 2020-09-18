@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Side } from "../../pages/generated/graphql";
+import { Side } from "../../generated/graphql";
 import { BallotScore } from "./BallotScore";
 import styled from "styled-components";
 import { SingleWitness } from "./SingleWitness";

@@ -1,7 +1,6 @@
-import { Side } from "../../pages/generated/graphql";
-import React, { useRef, useReducer, useEffect } from "react";
+import { Side } from "generated/graphql";
+import React, { useEffect } from "react";
 import { ExamScore } from "./ExamScore";
-import { sideSymbol } from "../../helpers/sideSymbol";
 import { BALLOT_OFFSETS } from "./ballotOffsets";
 import { useTrackValidity } from "./useTrackValidity";
 

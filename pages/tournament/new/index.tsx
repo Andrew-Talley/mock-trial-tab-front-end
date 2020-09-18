@@ -3,7 +3,7 @@ import { useState } from "react";
 import React from "react";
 import { FormGroup, Label, Input, Button } from "reactstrap";
 import { useRouter } from "next/router";
-import { useCreateTournamentMutation } from "./newTournament.generated";
+import { useCreateTournamentMutation } from "page-gql/newTournament.generated";
 import { toast } from "react-toastify";
 
 const NewTournament: NextPage = () => {

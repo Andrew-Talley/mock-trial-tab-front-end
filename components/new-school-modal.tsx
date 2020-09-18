@@ -9,7 +9,7 @@ import {
   ModalBody,
 } from "reactstrap";
 
-import { useAddSchoolMutation } from "../pages/tournament/[tournament]/schools/schools.generated";
+import { useAddSchoolMutation } from "../page-gql/schools.generated";
 import { useRouter } from "next/router";
 
 const NewSchoolModal: React.FC<{ children: React.ReactNode }> = ({

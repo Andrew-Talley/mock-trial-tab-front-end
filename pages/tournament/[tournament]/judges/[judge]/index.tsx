@@ -4,9 +4,12 @@ import { useRouter } from "next/router";
 
 import { Typeahead, Hint } from "react-bootstrap-typeahead";
 
-import { useJudgeInfoQuery, JudgeBallotInfoFragment } from "./judge.generated";
+import {
+  useJudgeInfoQuery,
+  JudgeBallotInfoFragment,
+} from "page-gql/judge.generated";
 import { Row, Col, Button } from "reactstrap";
-import { AddBallotForJudgeModal } from "../../../../../components/add-ballot-for-judge-modal/AddBallotForJudgeModal";
+import { AddBallotForJudgeModal } from "components/add-ballot-for-judge-modal/AddBallotForJudgeModal";
 
 const gridStyle: CSSProperties = {
   display: "grid",

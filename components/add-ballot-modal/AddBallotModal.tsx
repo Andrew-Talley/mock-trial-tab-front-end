@@ -15,7 +15,7 @@ import {
   useAssignBallotMutation,
 } from "./ballotModalInfo.generated";
 import { useRouter } from "next/router";
-import { Scalars } from "../../pages/generated/graphql";
+import { Scalars } from "../../generated/graphql";
 
 interface AddBallotModalProps extends React.HTMLAttributes<HTMLDivElement> {
   matchup: Scalars["ID"];

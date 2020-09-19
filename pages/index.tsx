@@ -133,7 +133,8 @@ export default function Home() {
       <p>If you're interested in helping, there are a few things you can do:</p>
       <ul>
         <li>
-          Developers: Help develop it on <a href="/">GitHub</a>.
+          Developers: Help develop it on{" "}
+          <a href="https://github.com/Andrew-Talley/mock-trial-tab">GitHub</a>.
         </li>
         <li>
           Test it – go through a tournament, try to take a series of actions,

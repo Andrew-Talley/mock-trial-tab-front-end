@@ -2,7 +2,7 @@ import { Side } from "generated/graphql";
 import React, { useEffect } from "react";
 import { ExamScore } from "./ExamScore";
 import { BALLOT_OFFSETS } from "./ballotOffsets";
-import { useTrackValidity } from "./useTrackValidity";
+import { useTrackValidity } from "../useTrackValidity";
 
 function getStart(witnessNum: number, caseInChief: Side) {
   const startOfCaseInChief =

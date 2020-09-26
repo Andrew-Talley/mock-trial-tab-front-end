@@ -32,7 +32,11 @@ const columns = [
   {
     Header: "Winner",
     accessor: "pd",
-    Cell: ({ value }) => (value > 0 ? "π" : value < 0 ? "∆" : "Tie"),
+    Cell: ({ value, row }) => {
+      if (!row.original.complete) return null;
+      const winner = value > 0 ? "π" : value < 0 ? "∆" : "Tie";
+      return `${winner} (+${Math.abs(value)})`;
+    },
   },
 ];
 

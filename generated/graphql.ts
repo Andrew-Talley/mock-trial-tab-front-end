@@ -194,7 +194,9 @@ export type BallotSide = {
   __typename?: 'BallotSide';
   side: Side;
   speech?: Maybe<Scalars['Int']>;
+  speechNotes?: Maybe<Scalars['String']>;
   exam?: Maybe<Scalars['Int']>;
+  examNotes?: Maybe<Scalars['String']>;
   sum: Scalars['Int'];
 };
 
@@ -204,7 +206,19 @@ export type BallotSideSpeechArgs = {
 };
 
 
+export type BallotSideSpeechNotesArgs = {
+  speech: Speech;
+};
+
+
 export type BallotSideExamArgs = {
+  order: Scalars['Int'];
+  role: Role;
+  type: ExamType;
+};
+
+
+export type BallotSideExamNotesArgs = {
   order: Scalars['Int'];
   role: Role;
   type: ExamType;
@@ -248,7 +262,9 @@ export type Mutation = {
   assignCrossOrder: AssignCrossOrder;
   assignWitnessName: AssignWitnessName;
   assignSpeechScore: Scalars['Int'];
+  assignSpeechNotes: Scalars['String'];
   assignExamScore: Scalars['Int'];
+  assignExamNotes: Scalars['String'];
   completeBallot: Ballot;
 };
 
@@ -358,11 +374,29 @@ export type MutationAssignSpeechScoreArgs = {
 };
 
 
+export type MutationAssignSpeechNotesArgs = {
+  ballot: Scalars['ID'];
+  notes: Scalars['String'];
+  side: Side;
+  speech: Speech;
+};
+
+
 export type MutationAssignExamScoreArgs = {
   ballot: Scalars['ID'];
   cross: Scalars['Boolean'];
   exam: Scalars['Int'];
   score: Scalars['Int'];
+  side: Side;
+  witness: Scalars['Boolean'];
+};
+
+
+export type MutationAssignExamNotesArgs = {
+  ballot: Scalars['ID'];
+  cross: Scalars['Boolean'];
+  exam: Scalars['Int'];
+  notes: Scalars['String'];
   side: Side;
   witness: Scalars['Boolean'];
 };

@@ -1,9 +1,9 @@
-import { Side, Speech } from "../../generated/graphql";
-import { BallotScore } from "./BallotScore";
+import { Side, Speech } from "../../../generated/graphql";
+import { BallotScore } from "../BallotScore";
 import styled from "styled-components";
 import { CaseInChief } from "./CaseInChief";
 import { SpeechScore } from "./SpeechScore";
-import { useTrackValidity } from "./useTrackValidity";
+import { useTrackValidity } from "../useTrackValidity";
 import { useEffect } from "react";
 
 const StyledSide = styled.div`

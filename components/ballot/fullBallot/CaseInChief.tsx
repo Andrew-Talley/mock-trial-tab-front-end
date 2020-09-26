@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
-import { Side } from "../../generated/graphql";
-import { BallotScore } from "./BallotScore";
+import { Side } from "../../../generated/graphql";
+import { BallotScore } from "../BallotScore";
 import styled from "styled-components";
 import { SingleWitness } from "./SingleWitness";
 import { BALLOT_OFFSETS } from "./ballotOffsets";
-import { useTrackValidity } from "./useTrackValidity";
+import { useTrackValidity } from "../useTrackValidity";
 
 const CaseInChiefHeader = styled.h5<{ row: number }>`
   grid-row: ${(props) => props.row};

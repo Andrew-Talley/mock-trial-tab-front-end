@@ -46,6 +46,7 @@ export default function Home() {
         <li>Ability to manually add pairings for a given round</li>
         <li>Ability to manually assign judges to ballots</li>
         <li>Ability to share ballots via url</li>
+        <li>Ability to fill out ballots (both score and notes)</li>
         <li>
           A lot of rusty edges! If there's an error, it probably won't tell you
           (though it'll be obvious that it didn't work). If you change something
@@ -70,7 +71,6 @@ export default function Home() {
       </p>
       <h3>Done by next week (9/26):</h3>
       <ul>
-        <li>Notes (i.e., the non-score parts of ballots)</li>
         <li>
           Ability to edit the lineups for each side (e.g., witness calls,
           attorneys, speakers, etc.)

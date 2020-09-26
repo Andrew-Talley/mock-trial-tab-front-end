@@ -1,0 +1,63 @@
+query getSpeechNotes(
+  $tournament: ID!
+  $ballot: ID!
+  $side: Side!
+  $speech: Speech!
+) {
+  tournament(id: $tournament) {
+    ballot(id: $ballot) {
+      side(side: $side) {
+        speechNotes(speech: $speech)
+      }
+    }
+  }
+}
+
+mutation updateSpeechNotes(
+  $ballot: ID!
+  $side: Side!
+  $speech: Speech!
+  $newNotes: String!
+) {
+  assignSpeechNotes(
+    ballot: $ballot
+    side: $side
+    speech: $speech
+    notes: $newNotes
+  )
+}
+
+query getExamNotes(
+  $tournament: ID!
+  $ballot: ID!
+  $side: Side!
+  $witnessNum: Int!
+  $examType: ExamType!
+  $role: Role!
+) {
+  tournament(id: $tournament) {
+    ballot(id: $ballot) {
+      side(side: $side) {
+        examNotes(order: $witnessNum, type: $examType, role: $role)
+      }
+    }
+  }
+}
+
+mutation updateExamNotes(
+  $ballot: ID!
+  $witnessNum: Int!
+  $side: Side!
+  $witness: Boolean!
+  $cross: Boolean!
+  $newNotes: String!
+) {
+  assignExamNotes(
+    ballot: $ballot
+    exam: $witnessNum
+    side: $side
+    witness: $witness
+    cross: $cross
+    notes: $newNotes
+  )
+}

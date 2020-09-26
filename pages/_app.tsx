@@ -2,6 +2,7 @@ import "../styles/globals.css";
 import "bootswatch/dist/sandstone/bootstrap.min.css";
 import "react-bootstrap-typeahead/css/Typeahead.css";
 import "react-toastify/dist/ReactToastify.css";
+import "react-mde/lib/styles/css/react-mde-all.css";
 
 import React from "react";
 import { Container } from "reactstrap";

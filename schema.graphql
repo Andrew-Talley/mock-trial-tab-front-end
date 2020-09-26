@@ -44,14 +44,16 @@ type Ballot {
   matchup: Matchup!
   judge: Judge!
   side(side: Side!): BallotSide!
-  pd(side: Side!): Int!
+  pd(side: Side!): Int
   complete: Boolean!
 }
 
 type BallotSide {
   side: Side!
   speech(speech: Speech!): Int
+  speechNotes(speech: Speech!): String
   exam(order: Int!, role: Role!, type: ExamType!): Int
+  examNotes(order: Int!, role: Role!, type: ExamType!): String
   sum: Int!
 }
 
@@ -119,7 +121,9 @@ type Mutation {
   assignCrossOrder(matchup: ID!, order: Int!, side: Side!, student: ID!, tournament: ID!): AssignCrossOrder!
   assignWitnessName(matchup: ID!, order: Int!, side: Side!, tournament: ID!, witness: String!): AssignWitnessName!
   assignSpeechScore(ballot: ID!, score: Int!, side: Side!, speech: Speech!): Int!
+  assignSpeechNotes(ballot: ID!, notes: String!, side: Side!, speech: Speech!): String!
   assignExamScore(ballot: ID!, cross: Boolean!, exam: Int!, score: Int!, side: Side!, witness: Boolean!): Int!
+  assignExamNotes(ballot: ID!, cross: Boolean!, exam: Int!, notes: String!, side: Side!, witness: Boolean!): String!
   completeBallot(ballot: ID!, tournament: ID!): Ballot!
 }
 
@@ -176,13 +180,13 @@ type Team {
 type Tournament {
   id: ID!
   name: String!
-  schools: [School]!
-  teams: [Team]!
+  schools: [School!]!
+  teams: [Team!]!
   team(num: Int!): Team!
   school(name: String!): School!
   judges: [Judge]!
   judge(id: ID!): Judge!
-  rounds: [Round]!
+  rounds: [Round!]!
   round(num: Int!): Round!
   matchup(id: ID!): Matchup!
   ballot(id: ID!): Ballot!

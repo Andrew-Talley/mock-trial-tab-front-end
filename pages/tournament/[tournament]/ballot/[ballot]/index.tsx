@@ -2,21 +2,12 @@ import React from "react";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import styled from "styled-components";
-import { Button } from "reactstrap";
-import { toast } from "react-toastify";
 
-import { BallotSide } from "components/ballot/BallotSide";
-import { Side } from "generated/graphql";
-import {
-  useGetBallotInfoQuery,
-  useCompleteBallotMutation,
-} from "page-gql/ballot.generated";
-import { useTrackValidity } from "components/ballot/useTrackValidity";
-
-const Ballot = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-`;
+import { useGetBallotInfoQuery } from "page-gql/ballot.generated";
+import { FullBallot } from "components/ballot/fullBallot/FullBallot";
+import { SpeechBallot } from "components/ballot/noteBallot/SpeechBallot";
+import { useTrackRound } from "components/ballot/useTrackRound";
+import { ExamBallot } from "components/ballot/noteBallot/ExamBallot";
 
 const BallotView: NextPage = () => {
   const { tournament, ballot } = useRouter().query as Record<string, string>;
@@ -29,22 +20,7 @@ const BallotView: NextPage = () => {
 
   const ballotData = data?.tournament.ballot;
 
-  const [valid, updateValid] = useTrackValidity(2);
-
-  const [_, complete] = useCompleteBallotMutation();
-
-  const onFinish = () => {
-    complete({
-      tournament,
-      ballot,
-    }).then(({ error }) => {
-      if (!error) {
-        toast("Submitted! Feel free to move to a new page");
-      } else {
-        toast(`Something went wrong... ${error}`);
-      }
-    });
-  };
+  const { nav, activeTab } = useTrackRound();
 
   return (
     <React.Fragment>
@@ -53,14 +29,20 @@ const BallotView: NextPage = () => {
           ? "Loading..."
           : `${ballotData.judge.name} judging ${ballotData.matchup.pl.teamNum} vs. ${ballotData.matchup.def.teamNum}`}
       </h2>
-      <Ballot>
-        <BallotSide onValidityChanged={updateValid(0)} side={Side.Pl} />
-        <BallotSide onValidityChanged={updateValid(1)} side={Side.Def} />
-      </Ballot>
-      <div className="d-flex justify-content-center mt-3 mb-5">
-        <Button color="primary" disabled={!valid} onClick={onFinish}>
-          Submit Ballot
-        </Button>
+      {nav}
+      <div>
+        {activeTab.type === "summary" ? (
+          <FullBallot tournament={tournament} ballot={ballot} />
+        ) : activeTab.type === "speech" ? (
+          <SpeechBallot speech={activeTab.speech} />
+        ) : activeTab.type === "exam" ? (
+          <ExamBallot
+            caseInChiefSide={activeTab.side}
+            witnessNum={activeTab.number}
+          />
+        ) : (
+          <h2>We ran into an error... try reloading the page</h2>
+        )}
       </div>
     </React.Fragment>
   );

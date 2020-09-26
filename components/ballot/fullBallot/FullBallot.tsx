@@ -38,7 +38,7 @@ export const FullBallot: React.FC<FullBallotProps> = ({
   };
 
   return (
-    <React.Fragment>
+    <>
       <Ballot>
         <BallotSide onValidityChanged={updateValid(0)} side={Side.Pl} />
         <BallotSide onValidityChanged={updateValid(1)} side={Side.Def} />
@@ -48,6 +48,6 @@ export const FullBallot: React.FC<FullBallotProps> = ({
           Submit Ballot
         </Button>
       </div>
-    </React.Fragment>
+    </>
   );
 };

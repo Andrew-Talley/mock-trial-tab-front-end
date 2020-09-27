@@ -22,8 +22,6 @@ interface SingleSpeechProps {
 const SingleSpeech: React.FC<SingleSpeechProps> = ({ speech, side }) => {
   const { score, onChange } = useSpeechScore(side, speech);
 
-  console.log(score);
-
   return (
     <NoteBallotPanel side={side}>
       <h3>{side === Side.Pl ? "π (Pl./Pros.)" : "∆ (Defense)"}</h3>

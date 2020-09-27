@@ -33,10 +33,6 @@ const Team: NextPage = () => {
 
     const opponent = is_pl ? m.def : m.pl;
 
-    if (!opponent.team) {
-      console.log(m);
-    }
-
     return {
       id: m.id,
       roundNum: m.roundNum,

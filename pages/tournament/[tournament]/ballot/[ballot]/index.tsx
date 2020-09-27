@@ -34,9 +34,10 @@ const BallotView: NextPage = () => {
         {activeTab.type === "summary" ? (
           <FullBallot tournament={tournament} ballot={ballot} />
         ) : activeTab.type === "speech" ? (
-          <SpeechBallot speech={activeTab.speech} />
+          <SpeechBallot speech={activeTab.speech} key={activeTab.speech} />
         ) : activeTab.type === "exam" ? (
           <ExamBallot
+            key={`${activeTab.side}-${activeTab.number}`}
             caseInChiefSide={activeTab.side}
             witnessNum={activeTab.number}
           />

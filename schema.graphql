@@ -96,7 +96,11 @@ type MatchupTeam {
   team: Team!
   studentInRole(role: AttorneyRole!): Student
   witness(order: Int): MatchupWitness!
-  attorney(order: Int, role: AttorneyRole, crossingWitnessNum: Int): MatchupAttorney
+  attorney(
+    order: Int
+    role: AttorneyRole
+    crossingWitnessNum: Int
+  ): MatchupAttorney
 }
 
 type MatchupWitness {
@@ -110,20 +114,78 @@ type Mutation {
   addTournament(name: String!): Tournament
   addSchool(name: String!, tournament: ID!): School!
   addTeam(name: String!, num: Int!, school: String!, tournament: ID!): Team
-  addStudentToTeam(name: String!, team: Int!, tournamentId: ID!): AddStudentToTeam
-  assignStudentToRole(matchup: ID!, role: AttorneyRole!, student: ID!, team: Int!, tournamentId: ID!): AssignStudentToRole
+  addStudentToTeam(
+    name: String!
+    team: Int!
+    tournamentId: ID!
+  ): AddStudentToTeam
+  assignStudentToRole(
+    matchup: ID!
+    role: AttorneyRole!
+    student: ID!
+    team: Int!
+    tournamentId: ID!
+  ): AssignStudentToRole
   addManualRound(matchups: [ManualRoundMatchup]!, tournamentId: ID!): Round!
   addJudge(name: String!, tournamentId: ID!): Judge!
   addJudgeConflict(judgeId: ID!, school: String!, tournamentId: ID!): Judge!
   assignJudgeToMatchup(judge: ID!, matchup: ID!, tournament: ID!): Ballot!
-  assignWitnessOrder(matchup: ID!, order: Int!, side: Side!, student: ID!, tournament: ID!): AssignWitnessOrder!
-  assignAttorneyToDirect(matchup: ID!, order: Int!, side: Side!, student: ID!, tournament: ID!): AssignAttorneyToDirect!
-  assignCrossOrder(matchup: ID!, order: Int!, side: Side!, student: ID!, tournament: ID!): AssignCrossOrder!
-  assignWitnessName(matchup: ID!, order: Int!, side: Side!, tournament: ID!, witness: String!): AssignWitnessName!
-  assignSpeechScore(ballot: ID!, score: Int!, side: Side!, speech: Speech!): Int!
-  assignSpeechNotes(ballot: ID!, notes: String!, side: Side!, speech: Speech!): String!
-  assignExamScore(ballot: ID!, cross: Boolean!, exam: Int!, score: Int!, side: Side!, witness: Boolean!): Int!
-  assignExamNotes(ballot: ID!, cross: Boolean!, exam: Int!, notes: String!, side: Side!, witness: Boolean!): String!
+  assignWitnessOrder(
+    matchup: ID!
+    order: Int!
+    side: Side!
+    student: ID!
+    tournament: ID!
+  ): AssignWitnessOrder!
+  assignAttorneyToDirect(
+    matchup: ID!
+    order: Int!
+    side: Side!
+    student: ID!
+    tournament: ID!
+  ): AssignAttorneyToDirect!
+  assignCrossOrder(
+    matchup: ID!
+    order: Int!
+    side: Side!
+    student: ID!
+    tournament: ID!
+  ): AssignCrossOrder!
+  assignWitnessName(
+    matchup: ID!
+    order: Int!
+    side: Side!
+    tournament: ID!
+    witness: String!
+  ): AssignWitnessName!
+  assignSpeechScore(
+    ballot: ID!
+    score: Int!
+    side: Side!
+    speech: Speech!
+  ): Int!
+  assignSpeechNotes(
+    ballot: ID!
+    notes: String!
+    side: Side!
+    speech: Speech!
+  ): String!
+  assignExamScore(
+    ballot: ID!
+    cross: Boolean!
+    exam: Int!
+    score: Int!
+    side: Side!
+    witness: Boolean!
+  ): Int!
+  assignExamNotes(
+    ballot: ID!
+    cross: Boolean!
+    exam: Int!
+    notes: String!
+    side: Side!
+    witness: Boolean!
+  ): String!
   completeBallot(ballot: ID!, tournament: ID!): Ballot!
 }
 
@@ -191,4 +253,3 @@ type Tournament {
   matchup(id: ID!): Matchup!
   ballot(id: ID!): Ballot!
 }
-

@@ -1,0 +1,38 @@
+query getCurrentWitnesses($tournament: ID!, $matchup: ID!, $side: Side!) {
+  tournament(id: $tournament) {
+    matchup(id: $matchup) {
+      team(side: $side) {
+        first: witness(order: 1) {
+          witnessName
+        }
+        second: witness(order: 2) {
+          witnessName
+        }
+        third: witness(order: 3) {
+          witnessName
+        }
+      }
+    }
+  }
+}
+
+mutation updateWitness(
+  $tournament: ID!
+  $matchup: ID!
+  $side: Side!
+  $order: Int!
+  $witness: String!
+) {
+  assignWitnessName(
+    tournament: $tournament
+    matchup: $matchup
+    side: $side
+    order: $order
+    witness: $witness
+  ) {
+    matchup {
+      id
+    }
+    witnessName
+  }
+}

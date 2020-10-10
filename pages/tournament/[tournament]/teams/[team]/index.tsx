@@ -1,11 +1,12 @@
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import React, { useMemo } from "react";
-import { Row, Col } from "reactstrap";
+import { Row, Col, Button } from "reactstrap";
 
 import { useTeamInfoQuery } from "page-gql/team.generated";
 import { DataTable } from "components/data-table";
 import Link from "next/link";
+import { AddStudentModal } from "components/add-student-modal/AddStudentModal";
 
 const studentColumns = [
   {
@@ -18,7 +19,7 @@ const Team: NextPage = () => {
   const { tournament, team } = useRouter().query as Record<string, string>;
   const teamNum = parseInt(team);
 
-  const [{ data }] = useTeamInfoQuery({
+  const [{ data }, refetch] = useTeamInfoQuery({
     variables: {
       tournament,
       teamNum,
@@ -75,6 +76,9 @@ const Team: NextPage = () => {
             data={data?.tournament.team.students}
             columns={studentColumns}
           />
+          <AddStudentModal onAdded={() => refetch()}>
+            <Button>Add Student</Button>
+          </AddStudentModal>
         </Col>
         <Col sm={6}>
           <h2>Matchups</h2>

@@ -1,8 +1,10 @@
 import { Side, Speech } from "generated/graphql";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Nav, NavItem, NavLink } from "reactstrap";
-import { sideSymbol } from "helpers/sideSymbol";
+import { sideSymbol } from "helpers/enumsToString";
 import styled from "styled-components";
+import { PageNav } from "components/PageNav";
+import { useRouter } from "next/router";
 
 const TABS = [
   {
@@ -67,7 +69,16 @@ const GridNav = styled(Nav)`
 `;
 
 export function useTrackRound() {
-  const [index, setIndex] = useState(0);
+  const router = useRouter();
+  const { page } = router.query as Record<string, string>;
+  const index = parseInt(page) || 0;
+
+  const setIndex = (newIndex: number) => {
+    const { tournament, ballot } = router.query;
+    if (tournament && ballot) {
+      router.push(`/tournament/${tournament}/ballot/${ballot}/${newIndex}`);
+    }
+  };
 
   const decrement = () => {
     if (index !== 0) {
@@ -86,23 +97,23 @@ export function useTrackRound() {
   const nextItem = index === TABS.length - 1 ? null : TABS[index + 1];
 
   const nav = (
-    <GridNav>
-      <NavItem>
-        <NavLink href="#" onClick={decrement}>
+    <PageNav
+      previous={
+        <>
           {previousItem !== null && "< "}
           {toLabel(previousItem)}
-        </NavLink>
-      </NavItem>
-      <NavItem>
-        <NavLink tag="span">{toLabel(currentItem)}</NavLink>
-      </NavItem>
-      <NavItem className="text-right">
-        <NavLink href="#" onClick={increment}>
+        </>
+      }
+      current={toLabel(currentItem)}
+      next={
+        <>
           {toLabel(nextItem)}
           {nextItem !== null && " >"}
-        </NavLink>
-      </NavItem>
-    </GridNav>
+        </>
+      }
+      onBack={decrement}
+      onForward={increment}
+    />
   );
 
   const activeTab = TABS[index];

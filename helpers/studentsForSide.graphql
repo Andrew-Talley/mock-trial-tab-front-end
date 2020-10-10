@@ -1,0 +1,14 @@
+query getStudentsForSide($tournament: ID!, $matchup: ID!, $side: Side!) {
+  tournament(id: $tournament) {
+    matchup(id: $matchup) {
+      team(side: $side) {
+        team {
+          students {
+            id
+            name
+          }
+        }
+      }
+    }
+  }
+}

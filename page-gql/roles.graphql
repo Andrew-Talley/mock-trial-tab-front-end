@@ -1,0 +1,74 @@
+query getAttorneyRole(
+  $tournament: ID!
+  $matchup: ID!
+  $side: Side!
+  $role: AttorneyRole
+) {
+  tournament(id: $tournament) {
+    matchup(id: $matchup) {
+      team(side: $side) {
+        team {
+          num
+        }
+        attorney(role: $role) {
+          student {
+            id
+            name
+          }
+        }
+      }
+    }
+  }
+}
+
+mutation changeStudentInRole(
+  $tournament: ID!
+  $matchup: ID!
+  $team: Int!
+  $role: AttorneyRole!
+  $student: ID!
+) {
+  assignStudentToRole(
+    tournamentId: $tournament
+    matchup: $matchup
+    team: $team
+    role: $role
+    student: $student
+  ) {
+    matchup {
+      id
+    }
+  }
+}
+
+query getWitnessInfo(
+  $tournament: ID!
+  $matchup: ID!
+  $side: Side!
+  $opposingSide: Side!
+  $witnessNum: Int!
+) {
+  tournament(id: $tournament) {
+    matchup(id: $matchup) {
+      team(side: $side) {
+        witness(order: $witnessNum) {
+          student {
+            id
+            name
+          }
+          witnessName
+        }
+      }
+      oppTeam: team(side: $opposingSide) {
+        attorney(crossingWitnessNum: $witnessNum) {
+          student {
+            id
+            name
+          }
+        }
+      }
+    }
+  }
+}
+
+mutation changeWitness

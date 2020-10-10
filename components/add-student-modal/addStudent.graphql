@@ -1,0 +1,11 @@
+mutation addStudent($tournament: ID!, $team: Int!, $name: String!) {
+  addStudentToTeam(tournamentId: $tournament, team: $team, name: $name) {
+    team {
+      num
+    }
+    student {
+      id
+      name
+    }
+  }
+}

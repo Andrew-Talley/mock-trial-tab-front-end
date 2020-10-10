@@ -65,6 +65,22 @@ const Matchup: NextPage = () => {
         </title>
       </Head>
       <h1>{title}</h1>
+      <Link
+        href="/tournament/[tournament]/matchup/[matchup]/captains"
+        as={`/tournament/${tournament}/matchup/${matchup}/captains`}
+      >
+        <a>
+          <h4 className="my-4">Witness Calls</h4>
+        </a>
+      </Link>
+      <Link
+        href="/tournament/[tournament]/matchup/[matchup]/roles"
+        as={`/tournament/${tournament}/matchup/${matchup}/roles`}
+      >
+        <a>
+          <h4 className="my-4">Student Roles</h4>
+        </a>
+      </Link>
       <h3>Ballots</h3>
       <DataTable
         columns={columns}

@@ -1,0 +1,24 @@
+mutation changeWitness(
+  $tournament: ID!
+  $matchup: ID!
+  $side: Side!
+  $order: Int!
+  $student: ID!
+) {
+  assignWitnessOrder(
+    tournament: $tournament
+    matchup: $matchup
+    side: $side
+    order: $order
+    student: $student
+  ) {
+    matchup {
+      id
+    }
+    student {
+      id
+      name
+    }
+    order
+  }
+}

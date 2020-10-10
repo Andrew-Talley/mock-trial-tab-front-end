@@ -10,7 +10,7 @@ interface DataTableProps {
 export const DataTable: React.FC<DataTableProps> = ({
   data,
   columns,
-  noDataIndicator,
+  noDataIndicator = <div>No data present</div>,
 }) => {
   const {
     getTableProps,
@@ -50,7 +50,7 @@ export const DataTable: React.FC<DataTableProps> = ({
           })}
         </tbody>
       </Table>
-      {data?.length === 0 && (noDataIndicator ?? <span>No data present</span>)}
+      {data?.length === 0 && noDataIndicator}
     </React.Fragment>
   );
 };

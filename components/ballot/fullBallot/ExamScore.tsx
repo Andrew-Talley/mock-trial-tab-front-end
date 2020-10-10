@@ -1,6 +1,6 @@
 import { BallotScore } from "../BallotScore";
 import { Side, Role, ExamType } from "../../../generated/graphql";
-import { sideSymbol } from "helpers/sideSymbol";
+import { sideSymbol } from "helpers/enumsToString";
 import { useExamScore } from "../useScores";
 
 function getScoreLabel(

@@ -151,9 +151,9 @@ export enum AttorneyRole {
 export type MatchupWitness = {
   __typename?: 'MatchupWitness';
   matchupTeam: MatchupTeam;
-  order: Scalars['Int'];
-  student: Student;
-  witnessName: Scalars['String'];
+  order?: Maybe<Scalars['Int']>;
+  student?: Maybe<Student>;
+  witnessName?: Maybe<Scalars['String']>;
 };
 
 export type MatchupAttorney = {

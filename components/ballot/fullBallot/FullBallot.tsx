@@ -46,13 +46,6 @@ export const FullBallot: React.FC<FullBallotProps> = ({
 
   return (
     <>
-      <span>
-        If your scores aren't appearing, try{" "}
-        <a href="#" onClick={() => window.location.reload()}>
-          reloading the page
-        </a>
-        .
-      </span>
       <EqualHalves>
         <BallotSide onValidityChanged={updateValid(0)} side={Side.Pl} />
         <BallotSide onValidityChanged={updateValid(1)} side={Side.Def} />

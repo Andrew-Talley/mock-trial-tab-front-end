@@ -17,6 +17,7 @@ export function useSpeechScore(side: Side, speech: Speech) {
       side,
       speech,
     },
+    requestPolicy: "cache-and-network",
   });
 
   const [score, setScore] = useState<number>();
@@ -60,6 +61,7 @@ export function useExamScore(
       role,
       type: examType,
     },
+    requestPolicy: "cache-and-network",
   });
 
   const gqlScore = data?.tournament.ballot.side.exam;

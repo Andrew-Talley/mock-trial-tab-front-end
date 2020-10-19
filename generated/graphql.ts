@@ -158,7 +158,7 @@ export type MatchupWitness = {
 
 export type MatchupAttorney = {
   __typename?: 'MatchupAttorney';
-  student: Student;
+  student?: Maybe<Student>;
 };
 
 export type Ballot = {

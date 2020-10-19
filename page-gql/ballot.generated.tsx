@@ -20,6 +20,7 @@ export type GetBallotInfoQuery = (
         & Pick<Types.Judge, 'name'>
       ), matchup: (
         { __typename?: 'Matchup' }
+        & Pick<Types.Matchup, 'id'>
         & { pl: (
           { __typename?: 'MatchupTeam' }
           & Pick<Types.MatchupTeam, 'teamNum'>
@@ -55,6 +56,7 @@ export const GetBallotInfoDocument = gql`
         name
       }
       matchup {
+        id
         pl {
           teamNum
         }

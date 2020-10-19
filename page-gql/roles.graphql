@@ -58,6 +58,12 @@ query getWitnessInfo(
           }
           witnessName
         }
+        attorney(order: $witnessNum) {
+          student {
+            id
+            name
+          }
+        }
       }
       oppTeam: team(side: $opposingSide) {
         attorney(crossingWitnessNum: $witnessNum) {
@@ -70,5 +76,3 @@ query getWitnessInfo(
     }
   }
 }
-
-mutation changeWitness

@@ -1,0 +1,45 @@
+fragment studentInfo on Student {
+  id
+  name
+}
+
+fragment witnessInfo on MatchupWitness {
+  student {
+    ...studentInfo
+  }
+}
+
+fragment teamInfo on MatchupTeam {
+  opener: studentInRole(role: OPENER) {
+    ...studentInfo
+  }
+  middle: studentInRole(role: MIDDLE) {
+    ...studentInfo
+  }
+  closer: studentInRole(role: CLOSER) {
+    ...studentInfo
+  }
+
+  firstWitness: witness(order: 1) {
+    ...witnessInfo
+  }
+  secondWitness: witness(order: 2) {
+    ...witnessInfo
+  }
+  thirdWitness: witness(order: 3) {
+    ...witnessInfo
+  }
+}
+
+query studentsByRole($tournament: ID!, $matchup: ID!) {
+  tournament(id: $tournament) {
+    matchup(id: $matchup) {
+      pl {
+        ...teamInfo
+      }
+      def {
+        ...teamInfo
+      }
+    }
+  }
+}

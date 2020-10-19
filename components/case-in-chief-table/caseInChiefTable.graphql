@@ -22,3 +22,52 @@ mutation changeWitness(
     order
   }
 }
+
+mutation changeDirectingAtty(
+  $tournament: ID!
+  $matchup: ID!
+  $side: Side!
+  $order: Int!
+  $attorney: ID!
+) {
+  assignAttorneyToDirect(
+    tournament: $tournament
+    matchup: $matchup
+    side: $side
+    order: $order
+    student: $attorney
+  ) {
+    matchup {
+      id
+    }
+    student {
+      id
+      name
+    }
+    order
+  }
+}
+
+mutation changeCrossingAtty(
+  $tournament: ID!
+  $matchup: ID!
+  $side: Side!
+  $order: Int!
+  $attorney: ID!
+) {
+  assignCrossOrder(
+    tournament: $tournament
+    matchup: $matchup
+    side: $side
+    order: $order
+    student: $attorney
+  ) {
+    matchup {
+      id
+    }
+    student {
+      id
+    }
+    order
+  }
+}

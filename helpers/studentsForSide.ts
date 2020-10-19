@@ -1,5 +1,5 @@
 import { Side } from "generated/graphql";
-import { useGetStudentsForSideQuery } from "page-gql/roles.generated";
+import { useGetStudentsForSideQuery } from "./studentsForSide.generated";
 
 export function useStudentsForSide(
   tournament: string,

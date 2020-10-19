@@ -5,6 +5,7 @@ query getBallotInfo($tournament: ID!, $ballot: ID!) {
         name
       }
       matchup {
+        id
         pl {
           teamNum
         }

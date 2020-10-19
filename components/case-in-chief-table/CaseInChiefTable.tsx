@@ -1,43 +1,17 @@
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import { Side } from "generated/graphql";
 import { useStudentsForSide } from "helpers/studentsForSide";
-import { useRouter } from "next/router";
-import {
-  useGetWitnessInfoQuery,
-  GetAttorneyRoleQueryVariables,
-} from "page-gql/roles.generated";
-import React, { useEffect, useState } from "react";
+import { useWitnessInfo } from "helpers/useWitnessInfo";
 import { Input, Table } from "reactstrap";
-import { useChangeWitnessMutation } from "./caseInChiefTable.generated";
+import {
+  useChangeWitnessMutation,
+  useChangeDirectingAttyMutation,
+  useChangeCrossingAttyMutation,
+} from "./caseInChiefTable.generated";
+import { OPP_SIDE } from "helpers/opp-side";
 
-type Variables = GetAttorneyRoleQueryVariables;
-
-function useWitnessInfo(side: Side, witnessNum: number) {
-  const { tournament, matchup } = useRouter().query as Record<string, string>;
-
-  const [{ data, ...passdownProps }] = useGetWitnessInfoQuery({
-    variables: {
-      tournament,
-      matchup,
-      side,
-      opposingSide: OPP_SIDE[side],
-      witnessNum,
-    },
-  });
-
-  const matchupInfo = data?.tournament.matchup;
-
-  const info = {
-    ...matchupInfo?.team.witness,
-    crosser: matchupInfo?.oppTeam.attorney,
-  };
-
-  return {
-    info,
-    ...passdownProps,
-  };
-}
-
-function useWitnessCell(side: Side, witnessNum: number) {
+function useTrackStudent(side: Side, serverId: string | undefined) {
   const { tournament, matchup } = useRouter().query as Record<string, string>;
   const { students: allStudents } = useStudentsForSide(
     tournament,
@@ -45,16 +19,27 @@ function useWitnessCell(side: Side, witnessNum: number) {
     side
   );
 
+  const [curStudent, setStudent] = useState(serverId);
+  useEffect(() => {
+    if (serverId) {
+      setStudent(serverId);
+    }
+  }, [serverId]);
+
+  const student = allStudents?.find((s) => s.id === curStudent);
+
+  return { student, setStudent, allStudents };
+}
+
+function useWitnessCell(side: Side, witnessNum: number) {
+  const { tournament, matchup } = useRouter().query as Record<string, string>;
+
   const { info } = useWitnessInfo(side, witnessNum);
 
-  const { student } = info;
-
-  const [curStudent, setStudent] = useState(student?.id);
-  useEffect(() => {
-    if (student) {
-      setStudent(student?.id);
-    }
-  }, [student?.id]);
+  const { student, setStudent, allStudents } = useTrackStudent(
+    side,
+    info?.student?.id
+  );
 
   const [_, changeStudent] = useChangeWitnessMutation();
 
@@ -69,10 +54,9 @@ function useWitnessCell(side: Side, witnessNum: number) {
     });
   };
 
-  const fullStudent = allStudents?.find((s) => s.id === curStudent);
   return {
-    id: curStudent,
-    name: fullStudent?.name,
+    id: student?.id,
+    name: student?.name,
     options: allStudents,
     onChange,
   };
@@ -105,9 +89,128 @@ const WitnessCell: React.FC<WitnessCellProps> = ({ side, witnessNum }) => {
   );
 };
 
-const OPP_SIDE = {
-  [Side.Pl]: Side.Def,
-  [Side.Def]: Side.Pl,
+function useDirectingAttorneyCell(side: Side, witnessNum: number) {
+  const { tournament, matchup } = useRouter().query as Record<string, string>;
+
+  const { info } = useWitnessInfo(side, witnessNum);
+  const { student, setStudent, allStudents } = useTrackStudent(
+    side,
+    info?.director?.student?.id
+  );
+
+  const [_, changeStudent] = useChangeDirectingAttyMutation();
+
+  const onChange = (newId: string) => {
+    setStudent(newId);
+    changeStudent({
+      tournament,
+      matchup,
+      side,
+      order: witnessNum,
+      attorney: newId,
+    });
+  };
+
+  return {
+    directingAtty: student as typeof student | undefined,
+    allStudents,
+    onChange,
+  };
+}
+
+interface DirectingAttorneyCellProps {
+  side: Side;
+  witnessNum: number;
+}
+const DirectingAttorneyCell: React.FC<DirectingAttorneyCellProps> = ({
+  side,
+  witnessNum,
+}) => {
+  const { directingAtty, allStudents, onChange } = useDirectingAttorneyCell(
+    side,
+    witnessNum
+  );
+
+  return (
+    <td>
+      <Input
+        type="select"
+        value={directingAtty?.id || ""}
+        onChange={(e) => onChange(e.target.value)}
+      >
+        <option disabled value="">
+          Choose Student
+        </option>
+        {allStudents?.map((s) => (
+          <option key={s.id} value={s.id}>
+            {s.name}
+          </option>
+        ))}
+      </Input>
+    </td>
+  );
+};
+
+function useCrossingAttorneyCell(side: Side, witnessNum: number) {
+  const { tournament, matchup } = useRouter().query as Record<string, string>;
+  const { info } = useWitnessInfo(side, witnessNum);
+
+  const { student, setStudent, allStudents } = useTrackStudent(
+    OPP_SIDE[side],
+    info?.crosser?.student.id
+  );
+
+  const [_, changeCrossingAttorney] = useChangeCrossingAttyMutation();
+
+  const onChange = (newId: string) => {
+    setStudent(newId);
+    changeCrossingAttorney({
+      tournament,
+      matchup,
+      side,
+      order: witnessNum,
+      attorney: newId,
+    });
+  };
+
+  return {
+    crossingAtty: student,
+    allStudents,
+    onChange,
+  };
+}
+
+interface CrossingAttorneyCellProps {
+  cInCSide: Side;
+  witnessNum: number;
+}
+const CrossingAttorneyCell: React.FC<CrossingAttorneyCellProps> = ({
+  cInCSide,
+  witnessNum,
+}) => {
+  const { crossingAtty, allStudents, onChange } = useCrossingAttorneyCell(
+    cInCSide,
+    witnessNum
+  );
+
+  return (
+    <td>
+      <Input
+        type="select"
+        value={crossingAtty?.id || ""}
+        onChange={(e) => onChange(e.target.value)}
+      >
+        <option disabled value="">
+          Choose Student
+        </option>
+        {allStudents?.map((s) => (
+          <option key={s.id} value={s.id}>
+            {s.name}
+          </option>
+        ))}
+      </Input>
+    </td>
+  );
 };
 
 interface CaseInChiefTableRowProps {
@@ -125,8 +228,8 @@ const CaseInChiefTableRow: React.FC<CaseInChiefTableRowProps> = ({
       <td>{witnessNum}</td>
       <td>{info.witnessName}</td>
       <WitnessCell side={side} witnessNum={witnessNum} />
-      <td>Zoe Luther</td>
-      <td>Kevin Loo</td>
+      <DirectingAttorneyCell side={side} witnessNum={witnessNum} />
+      <CrossingAttorneyCell cInCSide={side} witnessNum={witnessNum} />
     </tr>
   );
 };

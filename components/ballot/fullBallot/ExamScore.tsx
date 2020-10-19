@@ -2,23 +2,24 @@ import { BallotScore } from "../BallotScore";
 import { Side, Role, ExamType } from "../../../generated/graphql";
 import { sideSymbol } from "helpers/enumsToString";
 import { useExamScore } from "../useScores";
+import { WitnessInfo } from "helpers/useWitnessInfo";
 
 function getScoreLabel(
-  side: Side,
-  direct: boolean,
   witness: boolean,
-  num: number
+  direct: boolean,
+  { info }: WitnessInfo
 ) {
   if (witness) {
-    return `Witness #${num} ${direct ? "Direct" : "Cross"}`;
+    return `${info?.witnessName} ${direct ? "DX" : "CX"} (${
+      info?.student?.name
+    })`;
   }
+
   if (direct) {
-    return `Direct Exam of ${sideSymbol[side]} #${num}`;
+    return `Attorney DX of ${info?.witnessName} (${info?.director?.student?.name})`;
   }
 
-  const witnessSide = side === Side.Pl ? Side.Def : Side.Pl;
-
-  return `Cross Exam of ${sideSymbol[witnessSide]} #${num}`;
+  return `CX of ${info?.witnessName} (${info?.crosser?.student?.name})`;
 }
 
 interface ExamScoreProps {
@@ -26,6 +27,9 @@ interface ExamScoreProps {
   direct: boolean;
   witness: boolean;
   witnessNum: number;
+
+  info: WitnessInfo;
+
   row: number;
   onValidityChanged: (valid: boolean) => void;
 }
@@ -34,6 +38,7 @@ export const ExamScore: React.FC<ExamScoreProps> = ({
   direct,
   witness,
   witnessNum,
+  info,
   row,
   onValidityChanged,
 }) => {
@@ -48,7 +53,7 @@ export const ExamScore: React.FC<ExamScoreProps> = ({
       onChange={onChange}
       row={row}
     >
-      {getScoreLabel(side, direct, witness, witnessNum)}
+      {getScoreLabel(witness, direct, info)}
     </BallotScore>
   );
 };

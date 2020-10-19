@@ -1,4 +1,8 @@
 import { ExamType, Role, Side } from "generated/graphql";
+import { OPP_SIDE } from "helpers/opp-side";
+import { useWitnessInfo } from "helpers/useWitnessInfo";
+import { BallotContext } from "pages/tournament/[tournament]/ballot/[ballot]/[page]";
+import { useContext } from "react";
 import { BallotScore } from "../BallotScore";
 import { useExamScore } from "../useScores";
 import { NoteBallotPanel } from "./NoteBallotPanel";
@@ -31,6 +35,27 @@ function labelForExam(role: Role, type: ExamType) {
   return `Directing Attorney`;
 }
 
+function useGetExamLabel({ witnessNum, side, role, type }: ExamPanelProps) {
+  const { matchup } = useContext(BallotContext);
+  const caseInChiefSide =
+    role === Role.Attorney && type === ExamType.Cross ? OPP_SIDE[side] : side;
+  const { info, fetching, error } = useWitnessInfo(
+    caseInChiefSide,
+    witnessNum,
+    matchup
+  );
+
+  return fetching
+    ? "Loading..."
+    : error
+    ? "Error loading student"
+    : role === Role.Witness
+    ? `${info.witnessName} (${info.student?.name})`
+    : type === ExamType.Direct
+    ? info.director?.student?.name
+    : info.crosser?.student?.name;
+}
+
 interface ExamPanelProps {
   witnessNum: number;
   side: Side;
@@ -41,10 +66,20 @@ const ExamPanel: React.FC<ExamPanelProps> = (props) => {
   const { witnessNum, side, role, type } = props;
 
   const [score, setScore] = useExamScore(side, witnessNum, role, type);
+  const studentName = useGetExamLabel(props);
 
   return (
     <NoteBallotPanel side={side}>
-      <h4>{labelForExam(role, type)}</h4>
+      <h4 className={side === Side.Def ? "text-white" : undefined}>
+        {labelForExam(role, type)}
+      </h4>
+      <h6
+        {...(side === Side.Def
+          ? { style: { color: "#f4f4f4" } }
+          : { className: "text-secondary" })}
+      >
+        {studentName}
+      </h6>
       <div>
         <span>Score: </span>
         <BallotScore score={score} onChange={setScore} row={1} />

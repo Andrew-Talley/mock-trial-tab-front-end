@@ -24,38 +24,11 @@ export type GetAttorneyRoleQuery = (
           & Pick<Types.Team, 'num'>
         ), attorney?: Types.Maybe<(
           { __typename?: 'MatchupAttorney' }
-          & { student: (
+          & { student?: Types.Maybe<(
             { __typename?: 'Student' }
             & Pick<Types.Student, 'id' | 'name'>
-          ) }
+          )> }
         )> }
-      ) }
-    ) }
-  ) }
-);
-
-export type GetStudentsForSideQueryVariables = Types.Exact<{
-  tournament: Types.Scalars['ID'];
-  matchup: Types.Scalars['ID'];
-  side: Types.Side;
-}>;
-
-
-export type GetStudentsForSideQuery = (
-  { __typename?: 'Query' }
-  & { tournament: (
-    { __typename?: 'Tournament' }
-    & { matchup: (
-      { __typename?: 'Matchup' }
-      & { team: (
-        { __typename?: 'MatchupTeam' }
-        & { team: (
-          { __typename?: 'Team' }
-          & { students: Array<Types.Maybe<(
-            { __typename?: 'Student' }
-            & Pick<Types.Student, 'id' | 'name'>
-          )>> }
-        ) }
       ) }
     ) }
   ) }
@@ -105,15 +78,21 @@ export type GetWitnessInfoQuery = (
             { __typename?: 'Student' }
             & Pick<Types.Student, 'id' | 'name'>
           )> }
-        ) }
+        ), attorney?: Types.Maybe<(
+          { __typename?: 'MatchupAttorney' }
+          & { student?: Types.Maybe<(
+            { __typename?: 'Student' }
+            & Pick<Types.Student, 'id' | 'name'>
+          )> }
+        )> }
       ), oppTeam: (
         { __typename?: 'MatchupTeam' }
         & { attorney?: Types.Maybe<(
           { __typename?: 'MatchupAttorney' }
-          & { student: (
+          & { student?: Types.Maybe<(
             { __typename?: 'Student' }
             & Pick<Types.Student, 'id' | 'name'>
-          ) }
+          )> }
         )> }
       ) }
     ) }
@@ -144,26 +123,6 @@ export const GetAttorneyRoleDocument = gql`
 export function useGetAttorneyRoleQuery(options: Omit<Urql.UseQueryArgs<GetAttorneyRoleQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<GetAttorneyRoleQuery>({ query: GetAttorneyRoleDocument, ...options });
 };
-export const GetStudentsForSideDocument = gql`
-    query getStudentsForSide($tournament: ID!, $matchup: ID!, $side: Side!) {
-  tournament(id: $tournament) {
-    matchup(id: $matchup) {
-      team(side: $side) {
-        team {
-          students {
-            id
-            name
-          }
-        }
-      }
-    }
-  }
-}
-    `;
-
-export function useGetStudentsForSideQuery(options: Omit<Urql.UseQueryArgs<GetStudentsForSideQueryVariables>, 'query'> = {}) {
-  return Urql.useQuery<GetStudentsForSideQuery>({ query: GetStudentsForSideDocument, ...options });
-};
 export const ChangeStudentInRoleDocument = gql`
     mutation changeStudentInRole($tournament: ID!, $matchup: ID!, $team: Int!, $role: AttorneyRole!, $student: ID!) {
   assignStudentToRole(tournamentId: $tournament, matchup: $matchup, team: $team, role: $role, student: $student) {
@@ -188,6 +147,12 @@ export const GetWitnessInfoDocument = gql`
             name
           }
           witnessName
+        }
+        attorney(order: $witnessNum) {
+          student {
+            id
+            name
+          }
         }
       }
       oppTeam: team(side: $opposingSide) {

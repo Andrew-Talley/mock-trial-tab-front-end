@@ -30,6 +30,26 @@ query examScore(
   }
 }
 
+query getAttorney(
+  $tournament: ID!
+  $matchup: ID!
+  $side: Side!
+  $role: AttorneyRole!
+) {
+  tournament(id: $tournament) {
+    matchup(id: $matchup) {
+      team(side: $side) {
+        attorney(role: $role) {
+          student {
+            id
+            name
+          }
+        }
+      }
+    }
+  }
+}
+
 mutation updateSpeech(
   $ballot: ID!
   $side: Side!

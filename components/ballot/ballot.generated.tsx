@@ -49,6 +49,34 @@ export type ExamScoreQuery = (
   ) }
 );
 
+export type GetAttorneyQueryVariables = Types.Exact<{
+  tournament: Types.Scalars['ID'];
+  matchup: Types.Scalars['ID'];
+  side: Types.Side;
+  role: Types.AttorneyRole;
+}>;
+
+
+export type GetAttorneyQuery = (
+  { __typename?: 'Query' }
+  & { tournament: (
+    { __typename?: 'Tournament' }
+    & { matchup: (
+      { __typename?: 'Matchup' }
+      & { team: (
+        { __typename?: 'MatchupTeam' }
+        & { attorney?: Types.Maybe<(
+          { __typename?: 'MatchupAttorney' }
+          & { student?: Types.Maybe<(
+            { __typename?: 'Student' }
+            & Pick<Types.Student, 'id' | 'name'>
+          )> }
+        )> }
+      ) }
+    ) }
+  ) }
+);
+
 export type UpdateSpeechMutationVariables = Types.Exact<{
   ballot: Types.Scalars['ID'];
   side: Types.Side;
@@ -107,6 +135,26 @@ export const ExamScoreDocument = gql`
 
 export function useExamScoreQuery(options: Omit<Urql.UseQueryArgs<ExamScoreQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<ExamScoreQuery>({ query: ExamScoreDocument, ...options });
+};
+export const GetAttorneyDocument = gql`
+    query getAttorney($tournament: ID!, $matchup: ID!, $side: Side!, $role: AttorneyRole!) {
+  tournament(id: $tournament) {
+    matchup(id: $matchup) {
+      team(side: $side) {
+        attorney(role: $role) {
+          student {
+            id
+            name
+          }
+        }
+      }
+    }
+  }
+}
+    `;
+
+export function useGetAttorneyQuery(options: Omit<Urql.UseQueryArgs<GetAttorneyQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<GetAttorneyQuery>({ query: GetAttorneyDocument, ...options });
 };
 export const UpdateSpeechDocument = gql`
     mutation updateSpeech($ballot: ID!, $side: Side!, $speech: Speech!, $score: Int!) {

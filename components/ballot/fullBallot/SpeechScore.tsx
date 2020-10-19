@@ -2,15 +2,7 @@ import { useRouter } from "next/router";
 import { Side, Speech } from "generated/graphql";
 import { BallotScore } from "../BallotScore";
 import { useSpeechScore } from "../useScores";
-
-const openingRow = 2;
-
-const offset = 1;
-const sideTitle = 1;
-const witness = 4;
-const caseInChiefTitle = 1;
-const caseInChief = caseInChiefTitle + 3 * witness;
-const closingRow = offset + sideTitle + caseInChief * 2 + 1;
+import { BALLOT_OFFSETS } from "./ballotOffsets";
 
 interface SpeechScoreProps {
   side: Side;
@@ -26,7 +18,10 @@ export const SpeechScore: React.FC<SpeechScoreProps> = ({
 }) => {
   const { score, onChange } = useSpeechScore(side, speech);
 
-  const row = speech === Speech.Opening ? openingRow : closingRow;
+  const row =
+    speech === Speech.Opening
+      ? BALLOT_OFFSETS.openings
+      : BALLOT_OFFSETS.closings;
 
   return (
     <BallotScore

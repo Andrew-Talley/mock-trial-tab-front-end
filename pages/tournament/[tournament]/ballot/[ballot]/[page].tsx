@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import styled from "styled-components";
@@ -8,6 +8,15 @@ import { FullBallot } from "components/ballot/fullBallot/FullBallot";
 import { SpeechBallot } from "components/ballot/noteBallot/SpeechBallot";
 import { useTrackRound } from "components/ballot/useTrackRound";
 import { ExamBallot } from "components/ballot/noteBallot/ExamBallot";
+
+interface BallotContextType {
+  tournament: string;
+  matchup: string | null;
+}
+export const BallotContext = React.createContext<BallotContextType>({
+  tournament: "",
+  matchup: null,
+});
 
 const BallotView: NextPage = () => {
   const { tournament, ballot } = useRouter().query as Record<string, string>;
@@ -20,10 +29,18 @@ const BallotView: NextPage = () => {
 
   const ballotData = data?.tournament.ballot;
 
+  const ballotContextData = useMemo(
+    () => ({
+      tournament,
+      matchup: ballotData?.matchup.id,
+    }),
+    [tournament, ballotData?.matchup.id]
+  );
+
   const { nav, activeTab } = useTrackRound();
 
   return (
-    <React.Fragment>
+    <BallotContext.Provider value={ballotContextData}>
       <h2 className="mb-5">
         {!data || fetching
           ? "Loading..."
@@ -45,7 +62,7 @@ const BallotView: NextPage = () => {
           <h2>We ran into an error... try reloading the page</h2>
         )}
       </div>
-    </React.Fragment>
+    </BallotContext.Provider>
   );
 };
 export default BallotView;

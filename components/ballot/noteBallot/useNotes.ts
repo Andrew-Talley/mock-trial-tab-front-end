@@ -42,6 +42,7 @@ export function useSpeechNotes(side: Side, speech: Speech) {
       side,
       speech,
     },
+    requestPolicy: "cache-and-network",
   });
 
   const notes = data?.tournament.ballot.side.speechNotes;
@@ -75,6 +76,7 @@ export function useExamNotes(
       role,
       examType,
     },
+    requestPolicy: "cache-and-network",
   });
 
   const notes = data?.tournament.ballot.side.examNotes;

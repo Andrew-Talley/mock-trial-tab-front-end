@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 
@@ -7,9 +7,12 @@ import { DataTable } from "components/data-table";
 import { Button } from "reactstrap";
 import { AddJudgeModal } from "components/add-judge-modal/AddJudgeModal";
 import Link from "next/link";
+import { AuthContext } from "helpers/auth";
 
 const Judges: NextPage = () => {
   const { tournament } = useRouter().query as Record<string, string>;
+
+  const { admin } = useContext(AuthContext);
 
   const columns = [
     {
@@ -38,14 +41,19 @@ const Judges: NextPage = () => {
     },
   });
 
-  return (
-    <React.Fragment>
-      <h1>Judges!</h1>
+  return !admin ? (
+    <>
+      <h3>Unauthorized</h3>
+      <p>Sorry, this page is only for tournament administrators.</p>
+    </>
+  ) : (
+    <>
+      <h1>Judges</h1>
       <DataTable columns={columns} data={data?.tournament.judges} />
       <AddJudgeModal tournamentId={tournament}>
         <Button>Add Judge</Button>
       </AddJudgeModal>
-    </React.Fragment>
+    </>
   );
 };
 export default Judges;

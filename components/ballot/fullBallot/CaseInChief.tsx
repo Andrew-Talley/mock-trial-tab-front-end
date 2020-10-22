@@ -8,8 +8,7 @@ import { useTrackValidity } from "../useTrackValidity";
 
 const CaseInChiefHeader = styled.h5<{ row: number }>`
   grid-row: ${(props) => props.row};
-  grid-column-start: 2;
-  grid-column-end: 4;
+  grid-column: 2 / 4;
   text-align: center;
   text-transform: uppercase;
 `;

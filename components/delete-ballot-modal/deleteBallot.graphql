@@ -1,0 +1,3 @@
+mutation deleteBallot($ballot: ID!) {
+  deleteBallot(id: $ballot)
+}

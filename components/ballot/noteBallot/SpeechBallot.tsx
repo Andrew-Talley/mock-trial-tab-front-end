@@ -15,8 +15,9 @@ interface SpeechNotesProps {
 }
 export const SpeechNotes: React.FC<SpeechNotesProps> = ({ side, speech }) => {
   const [notes, setNotes] = useSpeechNotes(side, speech);
+  const { canEdit } = useContext(BallotContext);
 
-  return <Notes notes={notes} onChange={setNotes} />;
+  return <Notes notes={notes} onChange={setNotes} canEdit={canEdit} />;
 };
 
 const ROLE_FOR_SPEECH: Record<Speech, AttorneyRole> = {

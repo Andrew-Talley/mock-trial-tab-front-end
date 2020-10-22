@@ -16,7 +16,12 @@ export const RoleAward: React.FC<RoleAwardProps> = ({ role, options }) => {
       <h4 className="text-center">{text}</h4>
       <ol>
         {[1, 2, 3, 4].map((val) => (
-          <IndividualAward role={role} awardNum={val} options={options} />
+          <IndividualAward
+            key={val}
+            role={role}
+            awardNum={val}
+            options={options}
+          />
         ))}
       </ol>
     </div>

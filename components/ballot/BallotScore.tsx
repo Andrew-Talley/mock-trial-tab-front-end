@@ -1,6 +1,7 @@
 import styled from "styled-components";
-import React, { useEffect, useRef } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import { ScoreCell } from "./ScoreCell";
+import { BallotContext } from "pages/tournament/[tournament]/ballot/[ballot]/[page]";
 
 interface ScoreCellProps {
   row: number;
@@ -41,6 +42,8 @@ export const BallotScore: React.FC<BallotScoreProps> = ({
     validityChangedRef.current?.(isValid);
   }, [isValid]);
 
+  const { canEdit } = useContext(BallotContext);
+
   return (
     <React.Fragment>
       <FullBallotScoreCell
@@ -48,6 +51,7 @@ export const BallotScore: React.FC<BallotScoreProps> = ({
         row={row}
         score={score || ""}
         onChange={onChange}
+        disabled={!canEdit}
       />
       <ScoreLabel className="mt-2" row={row}>
         {children}

@@ -14,7 +14,8 @@ const StyledSide = styled.div`
   grid-column-gap: 0.5em;
 `;
 const SideHeader = styled.h4`
-  grid-column: 3;
+  grid-column: 2 / 4;
+  text-align: center;
   text-transform: uppercase;
 `;
 

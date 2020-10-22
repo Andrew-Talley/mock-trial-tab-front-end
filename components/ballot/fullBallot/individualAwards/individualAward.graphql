@@ -1,0 +1,44 @@
+query getIndividualAwards($tournament: ID!, $ballot: ID!) {
+  tournament(id: $tournament) {
+    ballot(id: $ballot) {
+      witnessAwards {
+        student {
+          id
+        }
+      }
+      attorneyAwards {
+        student {
+          id
+        }
+      }
+    }
+  }
+}
+
+mutation changeIndividualAward(
+  $ballot: ID!
+  $role: Role!
+  $rank: Int!
+  $student: ID!
+) {
+  assignIndividualAward(
+    ballot: $ballot
+    role: $role
+    rank: $rank
+    student: $student
+  ) {
+    rank
+    role {
+      ... on MatchupAttorney {
+        student {
+          id
+        }
+      }
+      ... on MatchupWitness {
+        student {
+          id
+        }
+      }
+    }
+  }
+}

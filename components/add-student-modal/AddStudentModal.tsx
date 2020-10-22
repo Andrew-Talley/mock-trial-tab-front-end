@@ -35,9 +35,10 @@ export const AddStudentModal: React.FC<AddStudentModalProps> = ({
     })
       .then(() => {
         onAdded();
+        setName("");
         setOpen(false);
       })
-      .finally(() => setAdding(true));
+      .finally(() => setAdding(false));
   };
 
   return (

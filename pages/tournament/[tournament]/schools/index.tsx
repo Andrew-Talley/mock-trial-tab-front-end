@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useContext, useMemo } from "react";
 import { NextPage } from "next";
 import { Button } from "reactstrap";
 import Link from "next/link";
@@ -14,9 +14,12 @@ import {
 import { withMTUrqlClient } from "helpers/withMTUrqlClient";
 import { DataTable } from "components/data-table";
 import NewSchoolModal from "components/new-school-modal";
+import { AuthContext } from "helpers/auth";
 
 const Schools: NextPage = () => {
   const { tournament } = useRouter().query;
+
+  const { admin } = useContext(AuthContext);
 
   const columns: Column<
     GetSchoolsQuery["tournament"]["schools"][number]
@@ -25,14 +28,17 @@ const Schools: NextPage = () => {
       {
         Header: "School",
         accessor: "name",
-        Cell: ({ value }) => (
-          <Link
-            href="/tournament/[tournament]/schools/[school]"
-            as={`/tournament/${tournament}/schools/${value}`}
-          >
-            <a>{value}</a>
-          </Link>
-        ),
+        Cell: ({ value }) =>
+          admin ? (
+            <Link
+              href="/tournament/[tournament]/schools/[school]"
+              as={`/tournament/${tournament}/schools/${value}`}
+            >
+              <a>{value}</a>
+            </Link>
+          ) : (
+            value
+          ),
       },
       {
         Header: "Number of Teams",

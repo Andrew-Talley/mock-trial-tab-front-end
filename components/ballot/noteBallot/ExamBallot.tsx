@@ -16,8 +16,9 @@ const ExamNotes: React.FC<ExamPanelProps> = ({
   type,
 }) => {
   const [notes, setNotes] = useExamNotes(side, witnessNum, role, type);
+  const { canEdit } = useContext(BallotContext);
 
-  return <Notes notes={notes} onChange={setNotes} />;
+  return <Notes notes={notes} onChange={setNotes} canEdit={canEdit} />;
 };
 
 function labelForExam(role: Role, type: ExamType) {

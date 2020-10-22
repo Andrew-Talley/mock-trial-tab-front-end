@@ -1,12 +1,13 @@
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import React, { useMemo } from "react";
+import React, { useContext, useMemo } from "react";
 import { Row, Col, Button } from "reactstrap";
 
 import { useTeamInfoQuery } from "page-gql/team.generated";
 import { DataTable } from "components/data-table";
 import Link from "next/link";
 import { AddStudentModal } from "components/add-student-modal/AddStudentModal";
+import { AuthContext } from "helpers/auth";
 
 const studentColumns = [
   {
@@ -18,6 +19,8 @@ const studentColumns = [
 const Team: NextPage = () => {
   const { tournament, team } = useRouter().query as Record<string, string>;
   const teamNum = parseInt(team);
+
+  const { admin, teamNumber } = useContext(AuthContext);
 
   const [{ data }, refetch] = useTeamInfoQuery({
     variables: {
@@ -66,7 +69,9 @@ const Team: NextPage = () => {
     [tournament]
   );
 
-  return (
+  const canView = admin || teamNumber === teamNum;
+
+  return canView ? (
     <React.Fragment>
       <h1 className="mb-4">{data?.tournament.team.name}</h1>
       <Row>
@@ -86,6 +91,11 @@ const Team: NextPage = () => {
         </Col>
       </Row>
     </React.Fragment>
+  ) : (
+    <>
+      <h3>Unauthorized</h3>
+      <p>Sorry, you are not authorized to view this page.</p>
+    </>
   );
 };
 export default Team;

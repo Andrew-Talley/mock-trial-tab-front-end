@@ -34,6 +34,8 @@ export type Tournament = {
   round: Round;
   matchup: Matchup;
   ballot: Ballot;
+  outstandingWitnesses: Array<IndividualAward>;
+  outstandingCompetitors: Array<IndividualAward>;
 };
 
 
@@ -64,6 +66,11 @@ export type TournamentMatchupArgs = {
 
 export type TournamentBallotArgs = {
   id: Scalars['ID'];
+};
+
+
+export type TournamentOutstandingCompetitorsArgs = {
+  role: Role;
 };
 
 export type School = {
@@ -153,6 +160,7 @@ export type MatchupWitness = {
   matchupTeam: MatchupTeam;
   order?: Maybe<Scalars['Int']>;
   student?: Maybe<Student>;
+  studentId: Scalars['ID'];
   witnessName?: Maybe<Scalars['String']>;
 };
 
@@ -168,6 +176,8 @@ export type Ballot = {
   judge: Judge;
   side: BallotSide;
   pd?: Maybe<Scalars['Int']>;
+  witnessAwards: Array<Maybe<MatchupWitness>>;
+  attorneyAwards: Array<Maybe<MatchupAttorney>>;
   complete: Scalars['Boolean'];
 };
 
@@ -246,6 +256,14 @@ export type Round = {
   matchups: Array<Maybe<Matchup>>;
 };
 
+export type IndividualAward = {
+  __typename?: 'IndividualAward';
+  side: Side;
+  ranks: Scalars['Int'];
+  role: Role;
+  student: Student;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   addTournament?: Maybe<Tournament>;
@@ -265,7 +283,9 @@ export type Mutation = {
   assignSpeechNotes: Scalars['String'];
   assignExamScore: Scalars['Int'];
   assignExamNotes: Scalars['String'];
+  assignIndividualAward: AssignIndividualAward;
   completeBallot: Ballot;
+  deleteBallot: Scalars['Boolean'];
 };
 
 
@@ -402,9 +422,22 @@ export type MutationAssignExamNotesArgs = {
 };
 
 
+export type MutationAssignIndividualAwardArgs = {
+  ballot: Scalars['ID'];
+  rank: Scalars['Int'];
+  role: Role;
+  student: Scalars['ID'];
+};
+
+
 export type MutationCompleteBallotArgs = {
   ballot: Scalars['ID'];
   tournament: Scalars['ID'];
+};
+
+
+export type MutationDeleteBallotArgs = {
+  id: Scalars['ID'];
 };
 
 export type AddStudentToTeam = {
@@ -452,3 +485,11 @@ export type AssignWitnessName = {
   matchup: Matchup;
   witnessName: Scalars['String'];
 };
+
+export type AssignIndividualAward = {
+  __typename?: 'AssignIndividualAward';
+  rank: Scalars['Int'];
+  role: IndividualAwardRole;
+};
+
+export type IndividualAwardRole = MatchupAttorney | MatchupWitness;

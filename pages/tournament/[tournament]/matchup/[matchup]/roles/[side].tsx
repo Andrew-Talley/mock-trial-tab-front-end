@@ -68,10 +68,17 @@ interface AttorneyRoleProps {
 const AttorneyRoleFC: React.FC<AttorneyRoleProps> = ({ side, role }) => {
   const [student, setStudent] = useAttorneyRole(side, role);
 
-  const { tournament, matchup } = useRouter().query as Record<string, string>;
+  const { tournament, matchup, side: pageSide } = useRouter().query as Record<
+    string,
+    string
+  >;
   const { students } = useStudentsForSide(tournament, matchup, side);
 
-  return (
+  const option = students?.find((s) => s.id === student?.id);
+
+  const canEdit = side === pageSide;
+
+  return canEdit ? (
     <>
       <Label className="mb-0">{attorneyRoleText[role]}</Label>
       <Input
@@ -91,6 +98,8 @@ const AttorneyRoleFC: React.FC<AttorneyRoleProps> = ({ side, role }) => {
         ))}
       </Input>
     </>
+  ) : (
+    option?.name
   );
 };
 

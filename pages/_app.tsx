@@ -43,13 +43,14 @@ const MyApp = ({ Component, pageProps, session, userInfo }) => {
 async function getUserInfo(context) {
   const [session /* , response */] = await Promise.all([getSession(context)]);
 
-  const [id, admin, teamNumber] =
+  const [id, tournament, admin, teamNumber] =
     typeof session?.user?.email === "string"
       ? session.user.email.split("-")
       : [null, null, null];
 
   const userInfo = {
     name: session?.user?.name ?? null,
+    tournament,
     id,
     admin: admin === "true",
     teamNumber: (teamNumber && parseInt(teamNumber, 10)) ?? null,

@@ -21,7 +21,7 @@ const options: InitOptions = {
             }
             connection.query(
               `
-              SELECT id, name, admin, team_num
+              SELECT id, name, admin, team_num, tournament_id
                 FROM User
               WHERE username = ? AND password = ?
             `,
@@ -40,7 +40,9 @@ const options: InitOptions = {
                     console.log(user);
                     return res({
                       name: user.name,
-                      email: `${user.id}-${user.admin === 1}-${user.team_num}`,
+                      email: `${user.id}-${user.tournament_id}-${
+                        user.admin === 1
+                      }-${user.team_num}`,
                     });
                   }
                 }

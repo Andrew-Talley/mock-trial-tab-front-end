@@ -58,12 +58,14 @@ const Schools: NextPage = () => {
     <React.Fragment>
       <h1>Schools</h1>
       <DataTable columns={columns} data={data?.tournament?.schools} />
-      <NewSchoolModal>
-        <Button color="primary" tag="a">
-          <FontAwesomeIcon icon={faPlus} className="mr-2" />
-          Add School
-        </Button>
-      </NewSchoolModal>
+      {admin && (
+        <NewSchoolModal>
+          <Button color="primary" tag="a">
+            <FontAwesomeIcon icon={faPlus} className="mr-2" />
+            Add School
+          </Button>
+        </NewSchoolModal>
+      )}
     </React.Fragment>
   );
 };

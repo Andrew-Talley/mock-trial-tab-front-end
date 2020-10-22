@@ -65,9 +65,11 @@ const Teams: NextPage = () => {
       ) : (
         <>
           <DataTable columns={columns} data={data?.tournament.teams} />
-          <NewTeamModal>
-            <Button color="primary">Add Team</Button>
-          </NewTeamModal>
+          {admin && (
+            <NewTeamModal>
+              <Button color="primary">Add Team</Button>
+            </NewTeamModal>
+          )}
         </>
       )}
     </React.Fragment>

@@ -99,7 +99,7 @@ const AttorneyRoleFC: React.FC<AttorneyRoleProps> = ({ side, role }) => {
       </Input>
     </>
   ) : (
-    option?.name
+    <>{option?.name}</>
   );
 };
 

@@ -44,7 +44,7 @@ const BallotView: NextPage = () => {
   const canEdit =
     typeof sessionStorage === "undefined"
       ? false
-      : sessionStorage.getItem("code");
+      : !!sessionStorage.getItem("code");
 
   const [{ data, fetching }] = useGetBallotInfoQuery({
     variables: {

@@ -17,9 +17,10 @@ import Link from "next/link";
 import { DeleteBallotModal } from "components/delete-ballot-modal/DeleteBallotModal";
 import { AuthContext } from "helpers/auth";
 
-const JudgeCell: React.FC<{ tournament: string; value: any }> = ({
+const JudgeCell: React.FC<{ tournament: string; value: any; refetch: any }> = ({
   tournament,
   value,
+  refetch,
 }) =>
   value ? (
     <div className="d-flex">
@@ -84,7 +85,7 @@ const Rounds: React.FC = () => {
         id: i.toString(),
         accessor: (data) => data.ballots[i],
         Cell: ({ value }) => (
-          <JudgeCell value={value} tournament={tournament} />
+          <JudgeCell value={value} tournament={tournament} refetch={refetch} />
         ),
       },
     ]);

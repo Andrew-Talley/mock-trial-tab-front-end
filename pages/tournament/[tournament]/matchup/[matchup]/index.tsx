@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import Head from "next/head";
@@ -8,6 +8,7 @@ import { DataTable } from "components/data-table";
 import { Button } from "reactstrap";
 import { AddBallotModal } from "components/add-ballot-modal/AddBallotModal";
 import Link from "next/link";
+import { AuthContext } from "helpers/auth";
 
 const columns = [
   {
@@ -42,8 +43,9 @@ const columns = [
 
 const Matchup: NextPage = () => {
   const { matchup, tournament } = useRouter().query as Record<string, string>;
+  const { teamNumber, admin } = useContext(AuthContext);
 
-  const [{ data }] = useGetMatchupInfoQuery({
+  const [{ data, fetching }] = useGetMatchupInfoQuery({
     variables: {
       tournament,
       matchup,
@@ -57,39 +59,53 @@ const Matchup: NextPage = () => {
 
   const title = `Round ${matchupData?.roundNum}: Team ${plTeam?.num} (π) vs. Team ${defTeam?.num} (∆)`;
 
+  const isPl = plTeam?.num === teamNumber;
+  const isDef = defTeam?.num === teamNumber;
+  const canView = isPl || isDef || admin;
+
+  const side = isPl ? "PL" : "DEF";
+
   return (
     <React.Fragment>
-      <Head>
-        <title>
-          {plTeam?.num} vs. {defTeam?.num}
-        </title>
-      </Head>
-      <h1>{title}</h1>
-      <Link
-        href="/tournament/[tournament]/matchup/[matchup]/captains"
-        as={`/tournament/${tournament}/matchup/${matchup}/captains`}
-      >
-        <a>
-          <h4 className="my-4">Witness Calls</h4>
-        </a>
-      </Link>
-      <Link
-        href="/tournament/[tournament]/matchup/[matchup]/roles"
-        as={`/tournament/${tournament}/matchup/${matchup}/roles`}
-      >
-        <a>
-          <h4 className="my-4">Student Roles</h4>
-        </a>
-      </Link>
-      <h3>Ballots</h3>
-      <DataTable
-        columns={columns}
-        data={data?.tournament.matchup.ballots}
-        noDataIndicator={<div>No ballots assigned</div>}
-      />
-      <AddBallotModal matchup={matchup}>
-        <Button className="mt-4">Assign Ballot</Button>
-      </AddBallotModal>
+      {fetching ? (
+        "Loading..."
+      ) : !canView ? (
+        "Sorry, you cannot view this matchup"
+      ) : (
+        <>
+          <Head>
+            <title>
+              {plTeam?.num} vs. {defTeam?.num}
+            </title>
+          </Head>
+          <h1>{title}</h1>
+          <Link
+            href="/tournament/[tournament]/matchup/[matchup]/captains/[SIDE]"
+            as={`/tournament/${tournament}/matchup/${matchup}/captains/${side}`}
+          >
+            <a>
+              <h4 className="my-4">Witness Calls</h4>
+            </a>
+          </Link>
+          <Link
+            href="/tournament/[tournament]/matchup/[matchup]/roles/[SIDE]"
+            as={`/tournament/${tournament}/matchup/${matchup}/roles/${side}`}
+          >
+            <a>
+              <h4 className="my-4">Student Roles</h4>
+            </a>
+          </Link>
+          <h3>Ballots</h3>
+          <DataTable
+            columns={columns}
+            data={data?.tournament.matchup.ballots}
+            noDataIndicator={<div>No ballots assigned</div>}
+          />
+          <AddBallotModal matchup={matchup}>
+            <Button className="mt-4">Assign Ballot</Button>
+          </AddBallotModal>
+        </>
+      )}
     </React.Fragment>
   );
 };

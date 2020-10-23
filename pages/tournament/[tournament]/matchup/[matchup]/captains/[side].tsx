@@ -1,4 +1,6 @@
+import { useMatchupInfoQuery } from "components/add-ballot-for-judge-modal/addJudgeBallot.generated";
 import { Side } from "generated/graphql";
+import { AuthContext } from "helpers/auth";
 import { sideSymbol, sideText } from "helpers/enumsToString";
 import { useWitnesses } from "helpers/useWitnesses";
 import Link from "next/link";
@@ -7,7 +9,8 @@ import {
   useGetCurrentWitnessesQuery,
   useUpdateWitnessMutation,
 } from "page-gql/captains.generated";
-import { useEffect, useState } from "react";
+import { useGetMatchupInfoQuery } from "page-gql/matchup.generated";
+import { useContext, useEffect, useState } from "react";
 import { Button, Input, NavLink, Table } from "reactstrap";
 
 function witnessesForSide(side: Side) {
@@ -79,14 +82,11 @@ const CharacterOrder: React.FC<CharacterOrderProps> = ({ order, onChange }) => (
 
 interface SideCallsProps {
   side: Side;
+  canEdit: boolean;
 }
-const SideCalls: React.FC<SideCallsProps> = ({ side }) => {
+const SideCalls: React.FC<SideCallsProps> = ({ side, canEdit }) => {
   const { tournament, matchup } = useRouter().query as Record<string, string>;
-  const { witnesses, order, changeWitness, changeOrder } = useWitnesses(
-    tournament,
-    matchup,
-    side
-  );
+  const { witnesses, changeWitness } = useWitnesses(tournament, matchup, side);
 
   return (
     <div className="w-50 p-2">
@@ -96,25 +96,26 @@ const SideCalls: React.FC<SideCallsProps> = ({ side }) => {
       <Table>
         <thead>
           <tr>
+            <th>Order</th>
             <th>Witness</th>
-            <th>Witness Order</th>
           </tr>
         </thead>
         <tbody>
           {witnesses.map((witness, ind) => (
             <tr key={ind}>
+              <td>{ind + 1}</td>
               <td>
-                <Character
-                  side={side}
-                  witness={witness}
-                  onChange={(wit) => changeWitness(ind, wit)}
-                />
-              </td>
-              <td>
-                <CharacterOrder
-                  order={order[ind]}
-                  onChange={(newOrder) => changeOrder(ind, newOrder)}
-                />
+                {canEdit ? (
+                  <Character
+                    side={side}
+                    witness={witness}
+                    onChange={(wit) => changeWitness(ind, wit)}
+                  />
+                ) : (
+                  <span style={{ display: "flex", height: "2.5em" }}>
+                    {witness}
+                  </span>
+                )}
               </td>
             </tr>
           ))}
@@ -125,14 +126,18 @@ const SideCalls: React.FC<SideCallsProps> = ({ side }) => {
 };
 
 const Captains: React.FC = () => {
-  const { tournament, matchup } = useRouter().query;
+  const { admin } = useContext(AuthContext);
+  const { tournament, matchup, side } = useRouter().query as Record<
+    string,
+    string
+  >;
 
   return (
     <>
       <h2>Witness Calls</h2>
       <div className="d-flex">
-        <SideCalls side={Side.Pl} />
-        <SideCalls side={Side.Def} />
+        <SideCalls side={Side.Pl} canEdit={admin || side === Side.Pl} />
+        <SideCalls side={Side.Def} canEdit={admin || side === Side.Def} />
       </div>
       <div>
         <NavLink>

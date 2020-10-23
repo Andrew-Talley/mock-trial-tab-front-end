@@ -10,6 +10,11 @@ import {
   useChangeCrossingAttyMutation,
 } from "./caseInChiefTable.generated";
 import { OPP_SIDE } from "helpers/opp-side";
+import styled from "styled-components";
+
+const EmptyCell = styled.div`
+  min-height: 2.5em;
+`;
 
 function useTrackStudent(side: Side, serverId: string | undefined) {
   const { tournament, matchup } = useRouter().query as Record<string, string>;
@@ -65,26 +70,37 @@ function useWitnessCell(side: Side, witnessNum: number) {
 interface WitnessCellProps {
   side: Side;
   witnessNum: number;
+  canEdit: boolean;
 }
-const WitnessCell: React.FC<WitnessCellProps> = ({ side, witnessNum }) => {
+const WitnessCell: React.FC<WitnessCellProps> = ({
+  side,
+  witnessNum,
+  canEdit,
+}) => {
   const { id, options, onChange } = useWitnessCell(side, witnessNum);
 
   return (
     <td>
-      <Input
-        type="select"
-        value={id || ""}
-        onChange={(e) => onChange(e.target.value)}
-      >
-        <option disabled value="">
-          Choose Student
-        </option>
-        {options?.map((o) => (
-          <option id={o.id} value={o.id}>
-            {o.name}
+      {canEdit ? (
+        <Input
+          type="select"
+          value={id || ""}
+          onChange={(e) => onChange(e.target.value)}
+        >
+          <option disabled value="">
+            Choose Student
           </option>
-        ))}
-      </Input>
+          {options?.map((o) => (
+            <option id={o.id} value={o.id}>
+              {o.name}
+            </option>
+          ))}
+        </Input>
+      ) : (
+        <EmptyCell>
+          {options.find((o) => o.id === id) || "Not Selected"}
+        </EmptyCell>
+      )}
     </td>
   );
 };
@@ -121,10 +137,12 @@ function useDirectingAttorneyCell(side: Side, witnessNum: number) {
 interface DirectingAttorneyCellProps {
   side: Side;
   witnessNum: number;
+  canEdit: boolean;
 }
 const DirectingAttorneyCell: React.FC<DirectingAttorneyCellProps> = ({
   side,
   witnessNum,
+  canEdit,
 }) => {
   const { directingAtty, allStudents, onChange } = useDirectingAttorneyCell(
     side,
@@ -133,20 +151,24 @@ const DirectingAttorneyCell: React.FC<DirectingAttorneyCellProps> = ({
 
   return (
     <td>
-      <Input
-        type="select"
-        value={directingAtty?.id || ""}
-        onChange={(e) => onChange(e.target.value)}
-      >
-        <option disabled value="">
-          Choose Student
-        </option>
-        {allStudents?.map((s) => (
-          <option key={s.id} value={s.id}>
-            {s.name}
+      {canEdit ? (
+        <Input
+          type="select"
+          value={directingAtty?.id || ""}
+          onChange={(e) => onChange(e.target.value)}
+        >
+          <option disabled value="">
+            Choose Student
           </option>
-        ))}
-      </Input>
+          {allStudents?.map((s) => (
+            <option key={s.id} value={s.id}>
+              {s.name}
+            </option>
+          ))}
+        </Input>
+      ) : (
+        <EmptyCell>{directingAtty?.name || "Not Selected"}</EmptyCell>
+      )}
     </td>
   );
 };
@@ -156,7 +178,7 @@ function useCrossingAttorneyCell(side: Side, witnessNum: number) {
   const { info } = useWitnessInfo(side, witnessNum);
 
   const { student, setStudent, allStudents } = useTrackStudent(
-    OPP_SIDE[side],
+    side,
     info?.crosser?.student.id
   );
 
@@ -183,32 +205,38 @@ function useCrossingAttorneyCell(side: Side, witnessNum: number) {
 interface CrossingAttorneyCellProps {
   cInCSide: Side;
   witnessNum: number;
+  canEdit: boolean;
 }
 const CrossingAttorneyCell: React.FC<CrossingAttorneyCellProps> = ({
   cInCSide,
   witnessNum,
+  canEdit,
 }) => {
   const { crossingAtty, allStudents, onChange } = useCrossingAttorneyCell(
-    cInCSide,
+    OPP_SIDE[cInCSide],
     witnessNum
   );
 
   return (
     <td>
-      <Input
-        type="select"
-        value={crossingAtty?.id || ""}
-        onChange={(e) => onChange(e.target.value)}
-      >
-        <option disabled value="">
-          Choose Student
-        </option>
-        {allStudents?.map((s) => (
-          <option key={s.id} value={s.id}>
-            {s.name}
+      {canEdit ? (
+        <Input
+          type="select"
+          value={crossingAtty?.id || ""}
+          onChange={(e) => onChange(e.target.value)}
+        >
+          <option disabled value="">
+            Choose Student
           </option>
-        ))}
-      </Input>
+          {allStudents?.map((s) => (
+            <option key={s.id} value={s.id}>
+              {s.name}
+            </option>
+          ))}
+        </Input>
+      ) : (
+        <EmptyCell>{crossingAtty?.name || "Not Selected"}</EmptyCell>
+      )}
     </td>
   );
 };
@@ -216,10 +244,12 @@ const CrossingAttorneyCell: React.FC<CrossingAttorneyCellProps> = ({
 interface CaseInChiefTableRowProps {
   side: Side;
   witnessNum: number;
+  directing: boolean;
 }
 const CaseInChiefTableRow: React.FC<CaseInChiefTableRowProps> = ({
   side,
   witnessNum,
+  directing,
 }) => {
   const { info } = useWitnessInfo(side, witnessNum);
 
@@ -227,17 +257,29 @@ const CaseInChiefTableRow: React.FC<CaseInChiefTableRowProps> = ({
     <tr>
       <td>{witnessNum}</td>
       <td>{info.witnessName}</td>
-      <WitnessCell side={side} witnessNum={witnessNum} />
-      <DirectingAttorneyCell side={side} witnessNum={witnessNum} />
-      <CrossingAttorneyCell cInCSide={side} witnessNum={witnessNum} />
+      <WitnessCell side={side} witnessNum={witnessNum} canEdit={directing} />
+      <DirectingAttorneyCell
+        side={side}
+        witnessNum={witnessNum}
+        canEdit={directing}
+      />
+      <CrossingAttorneyCell
+        cInCSide={side}
+        witnessNum={witnessNum}
+        canEdit={!directing}
+      />
     </tr>
   );
 };
 
 interface CaseInChiefTableProps {
   side: Side;
+  directing: boolean;
 }
-export const CaseInChiefTable: React.FC<CaseInChiefTableProps> = ({ side }) => {
+export const CaseInChiefTable: React.FC<CaseInChiefTableProps> = ({
+  side,
+  directing,
+}) => {
   return (
     <Table>
       <thead>
@@ -250,9 +292,9 @@ export const CaseInChiefTable: React.FC<CaseInChiefTableProps> = ({ side }) => {
         </tr>
       </thead>
       <tbody>
-        <CaseInChiefTableRow side={side} witnessNum={1} />
-        <CaseInChiefTableRow side={side} witnessNum={2} />
-        <CaseInChiefTableRow side={side} witnessNum={3} />
+        <CaseInChiefTableRow side={side} witnessNum={1} directing={directing} />
+        <CaseInChiefTableRow side={side} witnessNum={2} directing={directing} />
+        <CaseInChiefTableRow side={side} witnessNum={3} directing={directing} />
       </tbody>
     </Table>
   );

@@ -21,6 +21,11 @@ type AssignIndividualAward {
   role: IndividualAwardRole!
 }
 
+type AssignMatchupNotes {
+  matchup: Matchup!
+  notes: String!
+}
+
 type AssignStudentToRole {
   matchup: Matchup!
   student: Student!
@@ -69,6 +74,13 @@ enum ExamType {
   CROSS
 }
 
+type IndividualAward {
+  side: Side!
+  ranks: Int!
+  role: Role!
+  student: Student!
+}
+
 union IndividualAwardRole = MatchupAttorney | MatchupWitness
 
 type Judge {
@@ -91,6 +103,7 @@ type Matchup {
   roundNum: Int!
   team(side: Side!): MatchupTeam!
   ballots: [Ballot]
+  notes: String
 }
 
 type MatchupAttorney {
@@ -123,6 +136,7 @@ type Mutation {
   addStudentToTeam(name: String!, team: Int!, tournamentId: ID!): AddStudentToTeam
   assignStudentToRole(matchup: ID!, role: AttorneyRole!, student: ID!, team: Int!, tournamentId: ID!): AssignStudentToRole
   addManualRound(matchups: [ManualRoundMatchup]!, tournamentId: ID!): Round!
+  assignMatchupNotes(matchup: ID!, notes: String!, tournament: ID!): AssignMatchupNotes!
   addJudge(name: String!, tournamentId: ID!): Judge!
   addJudgeConflict(judgeId: ID!, school: String!, tournamentId: ID!): Judge!
   assignJudgeToMatchup(judge: ID!, matchup: ID!, tournament: ID!): Ballot!
@@ -136,6 +150,7 @@ type Mutation {
   assignExamNotes(ballot: ID!, cross: Boolean!, exam: Int!, notes: String!, side: Side!, witness: Boolean!): String!
   assignIndividualAward(ballot: ID!, rank: Int!, role: Role!, student: ID!): AssignIndividualAward!
   completeBallot(ballot: ID!, tournament: ID!): Ballot!
+  deleteBallot(id: ID!): Boolean!
 }
 
 type Query {
@@ -201,5 +216,7 @@ type Tournament {
   round(num: Int!): Round!
   matchup(id: ID!): Matchup!
   ballot(id: ID!): Ballot!
+  outstandingWitnesses: [IndividualAward!]!
+  outstandingCompetitors(role: Role!): [IndividualAward!]!
 }
 

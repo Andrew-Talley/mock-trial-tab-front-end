@@ -11,6 +11,8 @@ query getMatchupInfo($tournament: ID!, $matchup: ID!) {
       id
       roundNum
 
+      notes
+
       pl {
         ...sideInfo
       }
@@ -29,4 +31,8 @@ query getMatchupInfo($tournament: ID!, $matchup: ID!) {
       }
     }
   }
+}
+
+mutation updateMatchupNotes($tournament: ID!, $matchup: ID!, $notes: String!) {
+  assignMatchupNotes(tournament: $tournament, matchup: $matchup, notes: $notes)
 }

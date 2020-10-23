@@ -101,9 +101,11 @@ const Matchup: NextPage = () => {
             data={data?.tournament.matchup.ballots}
             noDataIndicator={<div>No ballots assigned</div>}
           />
-          <AddBallotModal matchup={matchup}>
-            <Button className="mt-4">Assign Ballot</Button>
-          </AddBallotModal>
+          {admin && (
+            <AddBallotModal matchup={matchup}>
+              <Button className="mt-4">Assign Ballot</Button>
+            </AddBallotModal>
+          )}
         </>
       )}
     </React.Fragment>

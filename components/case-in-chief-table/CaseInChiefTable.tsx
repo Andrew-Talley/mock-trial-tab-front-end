@@ -98,7 +98,7 @@ const WitnessCell: React.FC<WitnessCellProps> = ({
         </Input>
       ) : (
         <EmptyCell>
-          {options.find((o) => o.id === id) || "Not Selected"}
+          {options?.find((o) => o.id === id) || "Not Selected"}
         </EmptyCell>
       )}
     </td>

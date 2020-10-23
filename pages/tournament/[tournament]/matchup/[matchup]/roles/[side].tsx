@@ -86,7 +86,7 @@ const AttorneyRoleFC: React.FC<AttorneyRoleProps> = ({ side, role }) => {
           type="select"
           value={student?.id || ""}
           onChange={(e) =>
-            setStudent(students.find((s) => s.id === e.target.value))
+            setStudent(students?.find((s) => s.id === e.target.value))
           }
         >
           <option disabled value="">

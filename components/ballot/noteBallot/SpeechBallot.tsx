@@ -30,7 +30,7 @@ interface SingleSpeechProps {
   side: Side;
 }
 const SingleSpeech: React.FC<SingleSpeechProps> = ({ speech, side }) => {
-  const { tournament, matchup } = useContext(BallotContext);
+  const { tournament, matchup, noteOnly } = useContext(BallotContext);
   const { score, onChange } = useSpeechScore(side, speech);
   const [{ data, fetching, error }] = useGetAttorneyQuery({
     variables: {
@@ -52,10 +52,12 @@ const SingleSpeech: React.FC<SingleSpeechProps> = ({ speech, side }) => {
       <h3>
         {sideSymbol[side]} - {nameMessage}
       </h3>
-      <div>
-        <span className="mr-2">Score:</span>
-        <BallotScore score={score} onChange={onChange} row={1} />
-      </div>
+      {!noteOnly && (
+        <div>
+          <span className="mr-2">Score:</span>
+          <BallotScore score={score} onChange={onChange} row={1} />
+        </div>
+      )}
       <SpeechNotes side={side} speech={speech} />
     </NoteBallotPanel>
   );

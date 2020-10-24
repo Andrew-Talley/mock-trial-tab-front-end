@@ -68,7 +68,7 @@ const GridNav = styled(Nav)`
   grid-template-columns: 1fr auto 1fr;
 `;
 
-export function useTrackRound() {
+export function useTrackRound(noteOnly: boolean) {
   const router = useRouter();
   const { page } = router.query as Record<string, string>;
   const index = parseInt(page) || 0;
@@ -94,7 +94,10 @@ export function useTrackRound() {
 
   const previousItem = index === 0 ? null : TABS[index - 1];
   const currentItem = TABS[index];
-  const nextItem = index === TABS.length - 1 ? null : TABS[index + 1];
+  const nextItem =
+    (noteOnly && index === TABS.length - 2) || index === TABS.length - 1
+      ? null
+      : TABS[index + 1];
 
   const nav = (
     <PageNav

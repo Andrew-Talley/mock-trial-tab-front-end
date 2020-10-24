@@ -15,12 +15,14 @@ interface BallotContextType {
   ballot: string;
   matchup: string | null;
   canEdit: boolean;
+  noteOnly: boolean;
 }
 export const BallotContext = React.createContext<BallotContextType>({
   tournament: "",
   ballot: "",
   matchup: null,
   canEdit: false,
+  noteOnly: true,
 });
 
 function saveCode(url?: string) {
@@ -61,11 +63,12 @@ const BallotView: NextPage = () => {
       ballot,
       matchup: ballotData?.matchup.id,
       canEdit,
+      noteOnly: ballotData?.noteOnly ?? true,
     }),
     [tournament, ballot, ballotData?.matchup.id, canEdit]
   );
 
-  const { nav, activeTab } = useTrackRound();
+  const { nav, activeTab } = useTrackRound(ballotData?.noteOnly);
 
   return (
     <BallotContext.Provider value={ballotContextData}>

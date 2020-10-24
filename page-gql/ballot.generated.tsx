@@ -15,6 +15,7 @@ export type GetBallotInfoQuery = (
     { __typename?: 'Tournament' }
     & { ballot: (
       { __typename?: 'Ballot' }
+      & Pick<Types.Ballot, 'noteOnly' | 'presiding'>
       & { judge: (
         { __typename?: 'Judge' }
         & Pick<Types.Judge, 'name'>
@@ -55,6 +56,8 @@ export const GetBallotInfoDocument = gql`
       judge {
         name
       }
+      noteOnly
+      presiding
       matchup {
         id
         pl {

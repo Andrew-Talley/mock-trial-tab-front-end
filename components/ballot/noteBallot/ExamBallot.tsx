@@ -68,6 +68,7 @@ const ExamPanel: React.FC<ExamPanelProps> = (props) => {
 
   const [score, setScore] = useExamScore(side, witnessNum, role, type);
   const studentName = useGetExamLabel(props);
+  const { noteOnly } = useContext(BallotContext);
 
   return (
     <NoteBallotPanel side={side}>
@@ -81,10 +82,12 @@ const ExamPanel: React.FC<ExamPanelProps> = (props) => {
       >
         {studentName}
       </h6>
-      <div>
-        <span>Score: </span>
-        <BallotScore score={score} onChange={setScore} row={1} />
-      </div>
+      {!noteOnly && (
+        <div>
+          <span>Score: </span>
+          <BallotScore score={score} onChange={setScore} row={1} />
+        </div>
+      )}
       <ExamNotes {...props} />
     </NoteBallotPanel>
   );

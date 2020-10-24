@@ -4,6 +4,8 @@ query getBallotInfo($tournament: ID!, $ballot: ID!) {
       judge {
         name
       }
+      noteOnly
+      presiding
       matchup {
         id
         pl {

@@ -23,7 +23,7 @@ export type GetMatchupInfoQuery = (
     { __typename?: 'Tournament' }
     & { matchup: (
       { __typename?: 'Matchup' }
-      & Pick<Types.Matchup, 'id' | 'roundNum'>
+      & Pick<Types.Matchup, 'id' | 'roundNum' | 'notes'>
       & { pl: (
         { __typename?: 'MatchupTeam' }
         & SideInfoFragment
@@ -42,6 +42,24 @@ export type GetMatchupInfoQuery = (
   ) }
 );
 
+export type UpdateMatchupNotesMutationVariables = Types.Exact<{
+  tournament: Types.Scalars['ID'];
+  matchup: Types.Scalars['ID'];
+  notes: Types.Scalars['String'];
+}>;
+
+
+export type UpdateMatchupNotesMutation = (
+  { __typename?: 'Mutation' }
+  & { assignMatchupNotes: (
+    { __typename?: 'AssignMatchupNotes' }
+    & { matchup: (
+      { __typename?: 'Matchup' }
+      & Pick<Types.Matchup, 'id' | 'notes'>
+    ) }
+  ) }
+);
+
 export const SideInfoFragmentDoc = gql`
     fragment sideInfo on MatchupTeam {
   team {
@@ -56,6 +74,7 @@ export const GetMatchupInfoDocument = gql`
     matchup(id: $matchup) {
       id
       roundNum
+      notes
       pl {
         ...sideInfo
       }
@@ -77,4 +96,18 @@ export const GetMatchupInfoDocument = gql`
 
 export function useGetMatchupInfoQuery(options: Omit<Urql.UseQueryArgs<GetMatchupInfoQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<GetMatchupInfoQuery>({ query: GetMatchupInfoDocument, ...options });
+};
+export const UpdateMatchupNotesDocument = gql`
+    mutation updateMatchupNotes($tournament: ID!, $matchup: ID!, $notes: String!) {
+  assignMatchupNotes(tournament: $tournament, matchup: $matchup, notes: $notes) {
+    matchup {
+      id
+      notes
+    }
+  }
+}
+    `;
+
+export function useUpdateMatchupNotesMutation() {
+  return Urql.useMutation<UpdateMatchupNotesMutation, UpdateMatchupNotesMutationVariables>(UpdateMatchupNotesDocument);
 };

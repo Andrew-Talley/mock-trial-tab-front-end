@@ -31,7 +31,7 @@ export type JudgeInfoQuery = (
     { __typename?: 'Tournament' }
     & { judge: (
       { __typename?: 'Judge' }
-      & Pick<Types.Judge, 'id' | 'name'>
+      & Pick<Types.Judge, 'id' | 'name' | 'email'>
       & { conflicts: Array<Types.Maybe<(
         { __typename?: 'School' }
         & Pick<Types.School, 'name'>
@@ -66,6 +66,7 @@ export const JudgeInfoDocument = gql`
     judge(id: $judge) {
       id
       name
+      email
       conflicts {
         name
       }

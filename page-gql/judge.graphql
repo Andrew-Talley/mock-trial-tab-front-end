@@ -18,6 +18,7 @@ query judgeInfo($tournament: ID!, $judge: ID!) {
     judge(id: $judge) {
       id
       name
+      email
 
       conflicts {
         name

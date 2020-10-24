@@ -11,7 +11,10 @@ import {
   Button,
 } from "reactstrap";
 
-import { useCreateJudgeMutation } from "./createJudge.generated";
+import {
+  useCreateJudgeMutation,
+  useSetEmailMutation,
+} from "./createJudge.generated";
 
 interface AddJudgeModalProps {
   tournamentId: string;
@@ -24,16 +27,30 @@ export const AddJudgeModal: React.FC<AddJudgeModalProps> = ({
   const [isOpen, setOpen] = useState(false);
 
   const [judge, setJudge] = useState("");
+  const [email, setEmail] = useState("");
 
   const [{ fetching }, createJudge] = useCreateJudgeMutation();
+  const [_, assignEmail] = useSetEmailMutation();
 
   const addJudge = () => {
     createJudge({
       tournamentId,
       judgeName: judge,
-    }).then(({ error }) => {
+    }).then(({ data, error }) => {
       if (!error) {
-        setOpen(false);
+        if (email) {
+          assignEmail({
+            tournamentId,
+            judgeId: data.addJudge.id,
+            email,
+          }).then(({ error }) => {
+            if (!error) {
+              setOpen(false);
+            }
+          });
+        } else {
+          setOpen(false);
+        }
       }
     });
   };
@@ -46,7 +63,19 @@ export const AddJudgeModal: React.FC<AddJudgeModalProps> = ({
         <ModalBody>
           <FormGroup>
             <Label for="name">Name</Label>
-            <Input value={judge} onChange={(e) => setJudge(e.target.value)} />
+            <Input
+              id="name"
+              value={judge}
+              onChange={(e) => setJudge(e.target.value)}
+            />
+          </FormGroup>
+          <FormGroup>
+            <Label for="email">Email</Label>
+            <Input
+              id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
           </FormGroup>
         </ModalBody>
         <ModalFooter>

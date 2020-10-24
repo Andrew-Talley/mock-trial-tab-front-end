@@ -34,5 +34,14 @@ query getMatchupInfo($tournament: ID!, $matchup: ID!) {
 }
 
 mutation updateMatchupNotes($tournament: ID!, $matchup: ID!, $notes: String!) {
-  assignMatchupNotes(tournament: $tournament, matchup: $matchup, notes: $notes)
+  assignMatchupNotes(
+    tournament: $tournament
+    matchup: $matchup
+    notes: $notes
+  ) {
+    matchup {
+      id
+      notes
+    }
+  }
 }

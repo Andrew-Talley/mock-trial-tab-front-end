@@ -4,3 +4,10 @@ mutation createJudge($tournamentId: ID!, $judgeName: String!) {
     name
   }
 }
+
+mutation setEmail($tournamentId: ID!, $judgeId: ID!, $email: String!) {
+  assignJudgeEmail(tournament: $tournamentId, judge: $judgeId, email: $email) {
+    id
+    email
+  }
+}

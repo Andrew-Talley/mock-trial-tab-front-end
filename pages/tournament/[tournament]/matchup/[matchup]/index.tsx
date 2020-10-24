@@ -1,14 +1,18 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import Head from "next/head";
 
-import { useGetMatchupInfoQuery } from "page-gql/matchup.generated";
+import {
+  useGetMatchupInfoQuery,
+  useUpdateMatchupNotesMutation,
+} from "page-gql/matchup.generated";
 import { DataTable } from "components/data-table";
 import { Button } from "reactstrap";
 import { AddBallotModal } from "components/add-ballot-modal/AddBallotModal";
 import Link from "next/link";
 import { AuthContext } from "helpers/auth";
+import { Notes } from "components/ballot/noteBallot/Notes";
 
 const columns = [
   {
@@ -52,7 +56,26 @@ const Matchup: NextPage = () => {
     },
   });
 
+  const [_, updateMatchupNotes] = useUpdateMatchupNotesMutation();
+
   const matchupData = data?.tournament.matchup;
+  const matchupNotes = matchupData?.notes;
+
+  const [notes, setNotes] = useState("");
+  useEffect(() => {
+    if (matchupNotes) {
+      setNotes(matchupNotes);
+    }
+  }, [matchupNotes]);
+
+  const updateNotes = (notes: string) => {
+    updateMatchupNotes({
+      tournament,
+      matchup,
+      notes,
+    });
+    setNotes(notes);
+  };
 
   const plTeam = matchupData?.pl.team;
   const defTeam = matchupData?.def.team;
@@ -79,6 +102,8 @@ const Matchup: NextPage = () => {
             </title>
           </Head>
           <h1>{title}</h1>
+          <h3>Round Notes:</h3>
+          <Notes canEdit={admin} notes={notes} onChange={updateNotes} />
           <Link
             href="/tournament/[tournament]/matchup/[matchup]/captains/[SIDE]"
             as={`/tournament/${tournament}/matchup/${matchup}/captains/${side}`}

@@ -64,25 +64,9 @@ const Judge: NextPage = () => {
   return (
     <React.Fragment>
       <h1>{judgeData?.name || "Loading"}</h1>
-      {/* <section className="my-4" style={gridStyle}>
-        <h3 className="mr-2 mb-0">Conflicts:</h3>
-        <Typeahead
-          id="judge-conflicts"
-          options={schools}
-          selected={conflicts}
-          multiple
-          onChange={setConflicts}
-        />
-        <div />
-        <div>
-          <Button size="sm" className="m-1 ml-0">
-            Cancel Changes
-          </Button>
-          <Button size="sm" color="primary" className="m-1">
-            Save Changes
-          </Button>
-        </div>
-      </section> */}
+      <div>
+        <span className="font-bold">Email:</span> {judgeData?.email || "None"}
+      </div>
       <section className="my-4">
         <h3>Ballots</h3>
         <Row>

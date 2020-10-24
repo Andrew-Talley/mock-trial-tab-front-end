@@ -108,6 +108,7 @@ export type Matchup = {
   roundNum: Scalars['Int'];
   team: MatchupTeam;
   ballots?: Maybe<Array<Maybe<Ballot>>>;
+  notes?: Maybe<Scalars['String']>;
 };
 
 
@@ -198,6 +199,7 @@ export type Judge = {
   tournamentId: Scalars['ID'];
   ballots: Array<Maybe<Ballot>>;
   conflicts: Array<Maybe<School>>;
+  email?: Maybe<Scalars['String']>;
 };
 
 export type BallotSide = {
@@ -272,8 +274,10 @@ export type Mutation = {
   addStudentToTeam?: Maybe<AddStudentToTeam>;
   assignStudentToRole?: Maybe<AssignStudentToRole>;
   addManualRound: Round;
+  assignMatchupNotes: AssignMatchupNotes;
   addJudge: Judge;
   addJudgeConflict: Judge;
+  assignJudgeEmail: Judge;
   assignJudgeToMatchup: Ballot;
   assignWitnessOrder: AssignWitnessOrder;
   assignAttorneyToDirect: AssignAttorneyToDirect;
@@ -330,6 +334,13 @@ export type MutationAddManualRoundArgs = {
 };
 
 
+export type MutationAssignMatchupNotesArgs = {
+  matchup: Scalars['ID'];
+  notes: Scalars['String'];
+  tournament: Scalars['ID'];
+};
+
+
 export type MutationAddJudgeArgs = {
   name: Scalars['String'];
   tournamentId: Scalars['ID'];
@@ -340,6 +351,13 @@ export type MutationAddJudgeConflictArgs = {
   judgeId: Scalars['ID'];
   school: Scalars['String'];
   tournamentId: Scalars['ID'];
+};
+
+
+export type MutationAssignJudgeEmailArgs = {
+  email: Scalars['String'];
+  judge: Scalars['ID'];
+  tournament: Scalars['ID'];
 };
 
 
@@ -456,6 +474,12 @@ export type AssignStudentToRole = {
 export type ManualRoundMatchup = {
   pl: Scalars['Int'];
   def: Scalars['Int'];
+};
+
+export type AssignMatchupNotes = {
+  __typename?: 'AssignMatchupNotes';
+  matchup: Matchup;
+  notes: Scalars['String'];
 };
 
 export type AssignWitnessOrder = {

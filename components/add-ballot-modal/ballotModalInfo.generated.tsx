@@ -23,6 +23,8 @@ export type AssignBallotMutationVariables = Types.Exact<{
   tournament: Types.Scalars['ID'];
   matchup: Types.Scalars['ID'];
   judge: Types.Scalars['ID'];
+  presiding: Types.Scalars['Boolean'];
+  noteOnly: Types.Scalars['Boolean'];
 }>;
 
 
@@ -50,8 +52,8 @@ export function useBallotModalInfoQuery(options: Omit<Urql.UseQueryArgs<BallotMo
   return Urql.useQuery<BallotModalInfoQuery>({ query: BallotModalInfoDocument, ...options });
 };
 export const AssignBallotDocument = gql`
-    mutation assignBallot($tournament: ID!, $matchup: ID!, $judge: ID!) {
-  assignJudgeToMatchup(tournament: $tournament, matchup: $matchup, judge: $judge) {
+    mutation assignBallot($tournament: ID!, $matchup: ID!, $judge: ID!, $presiding: Boolean!, $noteOnly: Boolean!) {
+  assignJudgeToMatchup(tournament: $tournament, matchup: $matchup, judge: $judge, presiding: $presiding, noteOnly: $noteOnly) {
     id
   }
 }

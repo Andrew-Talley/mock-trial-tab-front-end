@@ -7,11 +7,19 @@ query ballotModalInfo($tournament: ID!) {
   }
 }
 
-mutation assignBallot($tournament: ID!, $matchup: ID!, $judge: ID!) {
+mutation assignBallot(
+  $tournament: ID!
+  $matchup: ID!
+  $judge: ID!
+  $presiding: Boolean!
+  $noteOnly: Boolean!
+) {
   assignJudgeToMatchup(
     tournament: $tournament
     matchup: $matchup
     judge: $judge
+    presiding: $presiding
+    noteOnly: $noteOnly
   ) {
     id
   }

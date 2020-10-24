@@ -180,6 +180,8 @@ export type Ballot = {
   witnessAwards: Array<Maybe<MatchupWitness>>;
   attorneyAwards: Array<Maybe<MatchupAttorney>>;
   complete: Scalars['Boolean'];
+  presiding: Scalars['Boolean'];
+  noteOnly: Scalars['Boolean'];
 };
 
 
@@ -355,7 +357,7 @@ export type MutationAddJudgeConflictArgs = {
 
 
 export type MutationAssignJudgeEmailArgs = {
-  email: Scalars['String'];
+  email?: Maybe<Scalars['String']>;
   judge: Scalars['ID'];
   tournament: Scalars['ID'];
 };
@@ -364,6 +366,8 @@ export type MutationAssignJudgeEmailArgs = {
 export type MutationAssignJudgeToMatchupArgs = {
   judge: Scalars['ID'];
   matchup: Scalars['ID'];
+  noteOnly?: Maybe<Scalars['Boolean']>;
+  presiding?: Maybe<Scalars['Boolean']>;
   tournament: Scalars['ID'];
 };
 

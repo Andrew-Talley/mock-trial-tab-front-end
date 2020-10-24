@@ -8,6 +8,9 @@ import {
   Input,
   ModalFooter,
   Button,
+  InputGroup,
+  Row,
+  Col,
 } from "reactstrap";
 
 import {
@@ -16,6 +19,7 @@ import {
 } from "./ballotModalInfo.generated";
 import { useRouter } from "next/router";
 import { Scalars } from "../../generated/graphql";
+import { toast } from "react-toastify";
 
 interface AddBallotModalProps extends React.HTMLAttributes<HTMLDivElement> {
   matchup: Scalars["ID"];
@@ -35,6 +39,9 @@ export const AddBallotModal: React.FC<AddBallotModalProps> = ({
 
   const [selectedJudge, selectJudge] = useState("");
 
+  const [presiding, setPresiding] = useState(false);
+  const [noteOnly, setNoteOnly] = useState(false);
+
   const [{ data }] = useBallotModalInfoQuery({
     variables: {
       tournament,
@@ -48,12 +55,23 @@ export const AddBallotModal: React.FC<AddBallotModalProps> = ({
       tournament,
       matchup,
       judge: selectedJudge,
-    }).then(({ error }) => {
-      if (!error) {
-        setOpen(false);
-        selectJudge("");
-      }
-    });
+      presiding,
+      noteOnly,
+    })
+      .then(({ error }) => {
+        if (!error) {
+          setOpen(false);
+          selectJudge("");
+        }
+      })
+      .catch(() => {
+        toast(
+          `Error assigning the judge. They are likely already assigned a ballot this round.`,
+          {
+            type: "warning",
+          }
+        );
+      });
   };
 
   return (
@@ -80,6 +98,41 @@ export const AddBallotModal: React.FC<AddBallotModalProps> = ({
                 </option>
               ))}
             </Input>
+          </FormGroup>
+          <Row>
+            <Col md={6}>
+              <FormGroup check>
+                <InputGroup onClick={() => setPresiding(true)}>
+                  <Label check>
+                    <Input type="radio" name="presiding" checked={presiding} />
+                    Presiding Judge
+                  </Label>
+                </InputGroup>
+              </FormGroup>
+            </Col>
+            <Col sm={6}>
+              <FormGroup>
+                <InputGroup onClick={() => setPresiding(false)}>
+                  <Label check>
+                    <Input type="radio" name="presiding" checked={!presiding} />
+                    Scoring Judge
+                  </Label>
+                </InputGroup>
+              </FormGroup>
+            </Col>
+          </Row>
+          <FormGroup check>
+            <InputGroup>
+              <Label check>
+                <Input
+                  type="checkbox"
+                  checked={noteOnly}
+                  onChange={(e) => setNoteOnly(e.target.checked)}
+                />
+                Note Only (Useful for presiding judges in rounds with uneven
+                numbers of judges)
+              </Label>
+            </InputGroup>
           </FormGroup>
         </ModalBody>
         <ModalFooter>

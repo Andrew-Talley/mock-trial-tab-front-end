@@ -75,21 +75,28 @@ const Rounds: React.FC = () => {
   const numJudges = Math.max(...currentRound.map((r) => r.ballots?.length), 0);
 
   const judgeColumns = useMemo<Column<any>[]>(() => {
-    if (numJudges === 0) return [];
+    let columns: Column<any>[] = [];
 
-    const sizedArray = Array.from(new Array(numJudges), (_, i) => i);
+    if (numJudges > 0) {
+      const sizedArray = Array.from(new Array(numJudges), (_, i) => i);
 
-    const judgeColumns: Column<any>[] = sizedArray.flatMap((_, i) => [
-      {
-        Header: i === 0 ? "Judges" : "",
-        id: i.toString(),
-        accessor: (data) => data.ballots[i],
-        Cell: ({ value }) => (
-          <JudgeCell value={value} tournament={tournament} refetch={refetch} />
-        ),
-      },
-    ]);
-    judgeColumns.push({
+      columns = sizedArray.flatMap((_, i) => [
+        {
+          Header: i === 0 ? "Judges" : "",
+          id: i.toString(),
+          accessor: (data) => data.ballots[i],
+          Cell: ({ value }) => (
+            <JudgeCell
+              value={value}
+              tournament={tournament}
+              refetch={refetch}
+            />
+          ),
+        },
+      ]);
+    }
+
+    columns.push({
       Header: "Add Judge",
       Cell: ({ row }) => (
         <AddBallotModal
@@ -102,7 +109,7 @@ const Rounds: React.FC = () => {
         </AddBallotModal>
       ),
     });
-    return judgeColumns;
+    return columns;
   }, [numJudges]);
 
   const columns = useMemo(() => {

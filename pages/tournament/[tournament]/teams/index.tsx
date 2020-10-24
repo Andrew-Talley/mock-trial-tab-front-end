@@ -48,11 +48,11 @@ const Teams: NextPage = () => {
         Header: "Team Name",
         accessor: "name",
       },
-      {
-        Header: "Record",
+      // {
+      //   Header: "Record",
 
-        accessor: (data: any) => `${data.wins} - ${data.losses} - ${data.ties}`,
-      },
+      //   accessor: (data: any) => `${data.wins} - ${data.losses} - ${data.ties}`,
+      // },
     ],
     [tournament]
   );

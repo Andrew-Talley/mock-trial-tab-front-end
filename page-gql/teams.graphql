@@ -1,9 +1,9 @@
 fragment teamData on Team {
   num
   name
-  wins
-  losses
-  ties
+  # wins
+  # losses
+  # ties
 }
 
 query getAllTeams($tournamentId: ID!) {

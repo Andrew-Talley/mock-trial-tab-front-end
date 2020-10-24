@@ -5,7 +5,7 @@ import * as Urql from 'urql';
 export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 export type TeamDataFragment = (
   { __typename?: 'Team' }
-  & Pick<Types.Team, 'num' | 'name' | 'wins' | 'losses' | 'ties'>
+  & Pick<Types.Team, 'num' | 'name'>
 );
 
 export type GetAllTeamsQueryVariables = Types.Exact<{
@@ -28,9 +28,6 @@ export const TeamDataFragmentDoc = gql`
     fragment teamData on Team {
   num
   name
-  wins
-  losses
-  ties
 }
     `;
 export const GetAllTeamsDocument = gql`

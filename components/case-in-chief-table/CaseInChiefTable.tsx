@@ -175,7 +175,7 @@ const DirectingAttorneyCell: React.FC<DirectingAttorneyCellProps> = ({
 
 function useCrossingAttorneyCell(side: Side, witnessNum: number) {
   const { tournament, matchup } = useRouter().query as Record<string, string>;
-  const { info } = useWitnessInfo(side, witnessNum);
+  const { info } = useWitnessInfo(OPP_SIDE[side], witnessNum);
 
   const { student, setStudent, allStudents } = useTrackStudent(
     side,

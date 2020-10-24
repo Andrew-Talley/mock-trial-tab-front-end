@@ -25,3 +25,10 @@ mutation completeBallot($tournament: ID!, $ballot: ID!) {
     complete
   }
 }
+
+mutation toggleNoteOnly($ballot: ID!, $noteOnly: Boolean!) {
+  noteOnlyBallot(id: $ballot, noteOnly: $noteOnly) {
+    id
+    noteOnly
+  }
+}

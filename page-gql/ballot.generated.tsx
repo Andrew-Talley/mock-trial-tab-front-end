@@ -48,6 +48,20 @@ export type CompleteBallotMutation = (
   ) }
 );
 
+export type ToggleNoteOnlyMutationVariables = Types.Exact<{
+  ballot: Types.Scalars['ID'];
+  noteOnly: Types.Scalars['Boolean'];
+}>;
+
+
+export type ToggleNoteOnlyMutation = (
+  { __typename?: 'Mutation' }
+  & { noteOnlyBallot: (
+    { __typename?: 'Ballot' }
+    & Pick<Types.Ballot, 'id' | 'noteOnly'>
+  ) }
+);
+
 
 export const GetBallotInfoDocument = gql`
     query getBallotInfo($tournament: ID!, $ballot: ID!) {
@@ -86,4 +100,16 @@ export const CompleteBallotDocument = gql`
 
 export function useCompleteBallotMutation() {
   return Urql.useMutation<CompleteBallotMutation, CompleteBallotMutationVariables>(CompleteBallotDocument);
+};
+export const ToggleNoteOnlyDocument = gql`
+    mutation toggleNoteOnly($ballot: ID!, $noteOnly: Boolean!) {
+  noteOnlyBallot(id: $ballot, noteOnly: $noteOnly) {
+    id
+    noteOnly
+  }
+}
+    `;
+
+export function useToggleNoteOnlyMutation() {
+  return Urql.useMutation<ToggleNoteOnlyMutation, ToggleNoteOnlyMutationVariables>(ToggleNoteOnlyDocument);
 };

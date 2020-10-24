@@ -281,6 +281,7 @@ export type Mutation = {
   addJudgeConflict: Judge;
   assignJudgeEmail: Judge;
   assignJudgeToMatchup: Ballot;
+  noteOnlyBallot: Ballot;
   assignWitnessOrder: AssignWitnessOrder;
   assignAttorneyToDirect: AssignAttorneyToDirect;
   assignCrossOrder: AssignCrossOrder;
@@ -369,6 +370,12 @@ export type MutationAssignJudgeToMatchupArgs = {
   noteOnly?: Maybe<Scalars['Boolean']>;
   presiding?: Maybe<Scalars['Boolean']>;
   tournament: Scalars['ID'];
+};
+
+
+export type MutationNoteOnlyBallotArgs = {
+  id: Scalars['ID'];
+  noteOnly?: Maybe<Scalars['Boolean']>;
 };
 
 

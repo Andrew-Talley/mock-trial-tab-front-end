@@ -1,14 +1,18 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useContext } from "react";
 import { NextPage } from "next";
 import { NextRouter, useRouter } from "next/router";
 import styled from "styled-components";
 
-import { useGetBallotInfoQuery } from "page-gql/ballot.generated";
+import {
+  useGetBallotInfoQuery,
+  useToggleNoteOnlyMutation,
+} from "page-gql/ballot.generated";
 import { FullBallot } from "components/ballot/fullBallot/FullBallot";
 import { SpeechBallot } from "components/ballot/noteBallot/SpeechBallot";
 import { useTrackRound } from "components/ballot/useTrackRound";
 import { ExamBallot } from "components/ballot/noteBallot/ExamBallot";
-import { route } from "next/dist/next-server/server/router";
+import { AuthContext } from "helpers/auth";
+import { Button } from "reactstrap";
 
 interface BallotContextType {
   tournament: string;
@@ -35,6 +39,7 @@ function saveCode(url?: string) {
 }
 
 const BallotView: NextPage = () => {
+  const { admin } = useContext(AuthContext);
   const router = useRouter();
   const { tournament, ballot } = router.query as Record<string, string>;
 
@@ -48,7 +53,7 @@ const BallotView: NextPage = () => {
       ? false
       : !!sessionStorage.getItem("code");
 
-  const [{ data, fetching }] = useGetBallotInfoQuery({
+  const [{ data, fetching }, refetch] = useGetBallotInfoQuery({
     variables: {
       tournament,
       ballot,
@@ -56,6 +61,7 @@ const BallotView: NextPage = () => {
   });
 
   const ballotData = data?.tournament.ballot;
+  const noteOnly = ballotData?.noteOnly ?? true;
 
   const ballotContextData = useMemo(
     () => ({
@@ -63,12 +69,21 @@ const BallotView: NextPage = () => {
       ballot,
       matchup: ballotData?.matchup.id,
       canEdit,
-      noteOnly: ballotData?.noteOnly ?? true,
+      noteOnly,
     }),
-    [tournament, ballot, ballotData?.matchup.id, canEdit]
+    [tournament, ballot, ballotData?.matchup.id, canEdit, noteOnly]
   );
 
-  const { nav, activeTab } = useTrackRound(ballotData?.noteOnly);
+  const { nav, activeTab } = useTrackRound(noteOnly);
+
+  const [_, updateGQLNoteOnly] = useToggleNoteOnlyMutation();
+
+  const toggleNoteOnly = () => {
+    updateGQLNoteOnly({
+      ballot,
+      noteOnly: !noteOnly,
+    }).then(() => refetch());
+  };
 
   return (
     <BallotContext.Provider value={ballotContextData}>
@@ -77,6 +92,11 @@ const BallotView: NextPage = () => {
           ? "Loading..."
           : `${ballotData.judge.name} judging ${ballotData.matchup.pl.teamNum} vs. ${ballotData.matchup.def.teamNum}`}
       </h2>
+      {admin && (
+        <Button onClick={toggleNoteOnly} color="warning">
+          Convert to {noteOnly ? "scoring" : "note-only"} ballot
+        </Button>
+      )}
       {nav}
       <div>
         {activeTab.type === "summary" ? (

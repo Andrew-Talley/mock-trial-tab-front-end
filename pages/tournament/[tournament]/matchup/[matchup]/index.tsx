@@ -61,12 +61,12 @@ const Matchup: NextPage = () => {
   const matchupData = data?.tournament.matchup;
   const matchupNotes = matchupData?.notes;
 
-  const [notes, setNotes] = useState("");
+  const [notes, setNotes] = useState(null);
   useEffect(() => {
-    if (matchupNotes) {
+    if (matchupNotes && notes === null) {
       setNotes(matchupNotes);
     }
-  }, [matchupNotes]);
+  }, [matchupNotes, notes]);
 
   const updateNotes = (notes: string) => {
     updateMatchupNotes({
@@ -103,7 +103,7 @@ const Matchup: NextPage = () => {
           </Head>
           <h1>{title}</h1>
           <h3>Round Notes:</h3>
-          <Notes canEdit={admin} notes={notes} onChange={updateNotes} />
+          <Notes canEdit={admin} notes={notes || ""} onChange={updateNotes} />
           <Link
             href="/tournament/[tournament]/matchup/[matchup]/captains/[SIDE]"
             as={`/tournament/${tournament}/matchup/${matchup}/captains/${side}`}
